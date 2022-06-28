@@ -7,22 +7,21 @@
     <link rel="stylesheet" type="text/css" href="../../static/CSS/login.css"/>
 </head>
 <body>
-<div class="container cla1">
-    <div class="row">
-        <div class="col-9 div1">
-            <h1> Welcome to Cad/Cam!</h1>
-        </div>
-        <div class="col-3 align-items-center">
-                <form method="get" action="cad-cam.html">
-                    <h2>LOGIN</h2>
-                    <label for="gen"><b>Số Gen</b>:</label></br>
-                    <input class="form-control" type="text" id="gen" placeholder="Nhập số Gen của bạn"></br>
-                    <label for="number"><b>Số ID:</b></label></br>
-                    <input class="form-control" type="text" id="number" placeholder="Nhập số ID của bạn"></br>
-                    <a class="btn btn-primary bt1"  href="../base/Base.html" >Login</a>
-                </form>
-        </div>
-    </div>
-</div>
+    
+    <form class="login-form" action="../base/Base.html" method="get" style="box-shadow: 3px 5px 5px #456; border: #456 solid 1px; border-radius: 10px; padding: 20px 20px;">
+        <h1 style="color: #aaa;">CAD/CAM System</h1>
+        <p class="login-text">
+            <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-user fa-stack-1x"></i>
+            </span>
+        </p>
+        <input type="text" class="login-username" autofocus="true" required="true" placeholder="ID" />
+        <input type="password" class="login-password" required="true" placeholder="Gen/Password" />
+        <input type="submit" name="Login" value="Login" class="login-submit" style="padding: 5px 15px; border-radius: 5px; background-color: #456" />
+    </form>
+    <a href="#" class="login-forgot-pass">forgot password?</a>
+    <div class="underlay-photo"></div>
+    <div class="underlay-black"></div> 
 </body>
 </html>
