@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'login',
     'home',
+    'cad_cam_app'
 ]
 
 MIDDLEWARE = [

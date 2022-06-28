@@ -8,7 +8,8 @@
 </head>
 <body>
     
-    <form class="login-form" action="../base/Base.html" method="get" style="box-shadow: 3px 5px 5px #456; border: #456 solid 1px; border-radius: 10px; padding: 20px 20px;">
+    <form class="login-form" action="{% url 'home' %}" method="post" style="box-shadow: 3px 5px 5px #456; border: #456 solid 1px; border-radius: 10px; padding: 20px 20px;">
+        {% csrf_token %}
         <h1 style="color: #aaa;">CAD/CAM System</h1>
         <p class="login-text">
             <span class="fa-stack fa-lg">
