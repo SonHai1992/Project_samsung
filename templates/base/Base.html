@@ -7,7 +7,7 @@
     <title>CAD/CAM solution</title>
     {% endblock %}
     <link rel="stylesheet" href="../../static/assets/css/bootstrap.css">
-    
+
     <link rel="stylesheet" href="../../static/assets/vendors/chartjs/Chart.min.css">
 
     <link rel="stylesheet" href="../../static/assets/vendors/perfect-scrollbar/perfect-scrollbar.css">
@@ -25,14 +25,14 @@
         <ul class="menu">
             <li class='sidebar-title'>Main Menu</li>
             <li class="sidebar-item active ">
-                <a href="index.html" class='sidebar-link'>
+                <a href="{% url 'home'%}" class='sidebar-link'>
                     <i data-feather="home" width="20"></i> 
                     <span>Home</span>
                 </a>
             </li>
             <li class="sidebar-item  has-sub">
                 <a href="#" class='sidebar-link'>
-                    <i data-feather="triangle" width="20"></i> 
+                    <i data-feather="triangle" width="20"></i>
                     <span>CAD/CAM</span>
                 </a>
                 <ul class="submenu ">
@@ -41,7 +41,7 @@
                     </li>
                     
                     <li>
-                        <a href="component-badge.html">Upload</a>
+                        <a href="{% url 'cam_upload' %}">Upload</a>
                     </li>
                 </ul>
             </li>
@@ -52,11 +52,11 @@
                 </a>
                 <ul class="submenu ">
                     <li>
-                        <a href="component-extra-avatar.html">Views</a>
+                        <a href="{% url 'pqc_view'%}">Views</a>
                     </li>
                     
                     <li>
-                        <a href="component-extra-divider.html">Upload</a>
+                        <a href="{% url 'pqc_upload'%}">Upload</a>
                     </li>
                 </ul>
             </li>
@@ -86,7 +86,7 @@
                                 <a class="dropdown-item active" href="#"><i data-feather="mail"></i> Messages</a>
                                 <a class="dropdown-item" href="#"><i data-feather="settings"></i> Settings</a> -->
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="{% url 'login_handler' %}"><i data-feather="log-out"></i> Logout</a>
+                                <a class="dropdown-item" href="{% url 'logout' %}"><i data-feather="log-out"></i> Logout</a>
                             </div>
                         </li>
                     </ul>

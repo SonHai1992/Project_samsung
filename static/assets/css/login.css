@@ -35,6 +35,10 @@ input:focus :-ms-input-placeholder {
   margin: auto;
   max-width: 50%;
   padding: 0.5rem;
+  box-shadow: 3px 5px 5px #456;
+  border: #456 solid 1px;
+  border-radius: 10px;
+  padding: 20px 20px;
 }
 .login-text {
   color: white;
