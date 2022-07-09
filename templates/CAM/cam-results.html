@@ -1,5 +1,5 @@
 {% extends 'base/Base.html' %}
-
+{% load static %}
 {% block title %} 
     <title>CAD/CAM view page</title>
 {% endblock %}
@@ -11,24 +11,32 @@
         <div class="col-md-4">
             <h2>View PQC results</h2>
             <div>
-                <form class="form-group" action="{% url 'cam_upload' %}" method="post">
+                <form class="form-group" action="{% url 'cad_cam_view' %}" method="post">
+                    {% if message %}
+                        <div class="alert alert-danger">{{message}}</div>
+                    {% endif %}
+                    {% csrf_token %}
                     <label for="model1">Model:</label>
-                    <input class="form-control" type="text" id="model1">
+                    <input class="form-control" type="text" name="model" id="model1" list="model_list">
+                    <datalist id="model_list">
+                        {% for model in list_model %}
+                            <option value="{{model}}">
+                        {% endfor %}
+                    </datalist>
                     <label for="cnc1">Process:</label>
-                    <select class="form-control" id="cnc1">
-                        <option value="">CNC3</option>
-                        <option value="">CNC4</option>
-                        <option value="">CNC5</option>
-                        <option value="">CNC6</option>
-                        <option value="">CNC7</option>
-                        <option value="">CNC8</option>
-                        <option value="">CNC9</option>
+                    <select class="form-control" id="cnc1" name="process">
+                        <option value="CNC3">CNC3</option>
+                        <option value="CNC4">CNC4</option>
+                        <option value="CNC5">CNC5</option>
+                        <option value="CNC6">CNC6</option>
+                        <option value="CNC7">CNC7</option>
+                        <option value="CNC8">CNC8</option>
+                        <option value="CNC9">CNC9</option>
                     </select>
                     <label for="ver1">Version:</label>
-                    <input class="form-control" type="text" id="ver1">
+                    <input class="form-control" type="text" id="ver1" name="version">
                     <label for="pg1">PG name:</label>
-                    <input class="form-control" type="text" id="pg1">
-                    <input class="form-control mt-3" type="file" id="myFile">
+                    <input class="form-control" type="text" id="pg1" name="pg_name">
                     <div class="mt-3 text-center">
                         <button type="submit" class="btn btn-danger">View PQC Results</button>
                     </div>
@@ -38,7 +46,7 @@
 
         <div class="col-md-8">
             <div style="min-height:79vh; max-height:79vh;" class="form-control">
-                <img src="https://ychef.files.bbci.co.uk/976x549/p0cbmzgv.jpg" alt="Tree" width="100%" />
+                <img src={% static img %} alt="{{img}}" width="100%" />
             </div>
         </div>
     </div>

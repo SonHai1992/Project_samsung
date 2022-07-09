@@ -9,4 +9,4 @@ urlpatterns = [
     path('accounts/', include('login.urls')),
     path('cad-cam/', include('cad_cam_app.urls')),
     path('pqc/', include('pqc_app.urls')),
-]+ static(settings.MEDIA_URL, documents_root=settings.MEDIA_ROOT)
+]
