@@ -1,0 +1,45 @@
+{% extends 'base/Base.html' %}
+{% load static %}
+{% block title %} 
+    <title>Cad_cam_index</title>
+{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="row">
+         <div class="col-md-8">
+             <a class="btn btn-primary" href="{% url 'cam_upload' %}">Upload</a>
+         </div>
+        <div class="col-md-4">
+            <form class="input-group" method="post" action="#">
+                {% csrf_token %}
+                <input style="width:50%; margin-bottom:1px" class="form-control" type="search" placeholder="Search..." name="search>">
+                <button class="btn btn-outline-secondary" type="submit" name="#">Search</button>
+            </form>
+        </div>
+    </div>
+        <table  class="table table-hover" style="text-align: center;">
+            <thead>
+                <th>No.</th>
+                <th>Model</th>
+                <th>Process</th>
+                <th>Version</th>
+                <th>P/G Name</th>
+                <th>Action</th>
+            </thead>
+            {% for i in custom %}
+            <tr>
+                <td>{{ forloop.counter}}</td>
+                <td>{{i.model}}</td>
+                <td>{{i.process}}</td>
+                <td>{{i.version}}</td>
+                <td>{{i.pg_name}}</td>
+                <td>
+                    <a class="btn btn-info" href="#">Edit</a>
+                    <a class="btn btn-success" href="#">View</a>
+                    <a class="btn btn-danger" href="#">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+{% endblock %}

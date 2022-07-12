@@ -30,35 +30,17 @@
                     <span>Home</span>
                 </a>
             </li>
-            <li class="sidebar-item  has-sub">
-                <a href="#" class='sidebar-link'>
+            <li class="sidebar-item">
+                <a href="{% url 'index' %}" class='sidebar-link'>
                     <i data-feather="triangle" width="20"></i>
                     <span>CAD/CAM</span>
                 </a>
-                <ul class="submenu ">
-                    <li>
-                        <a href="{% url 'cad_cam_view' %}">Views</a>
-                    </li>
-                    
-                    <li>
-                        <a href="{% url 'cam_upload' %}">Upload</a>
-                    </li>
-                </ul>
             </li>
-            <li class="sidebar-item  has-sub">
-                <a href="#" class='sidebar-link'>
+            <li class="sidebar-item">
+                <a href="/hjjh" class='sidebar-link'>
                     <i data-feather="briefcase" width="20"></i> 
                     <span>PQC</span>
                 </a>
-                <ul class="submenu ">
-                    <li>
-                        <a href="{% url 'pqc_view'%}">Views</a>
-                    </li>
-                    
-                    <li>
-                        <a href="{% url 'pqc_upload'%}">Upload</a>
-                    </li>
-                </ul>
             </li>
         </ul>
     </div>

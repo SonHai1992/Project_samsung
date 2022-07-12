@@ -1,5 +1,7 @@
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render, HttpResponse,redirect
 from django.contrib.auth.decorators import login_required
+from django.template.context_processors import request
+
 from database.models import Cadcam
 
 
@@ -29,6 +31,7 @@ def view_cam_result(request):
 
 @login_required
 def cam_up_load(request):
+    custom =Cadcam.objects.filter(deleted=False)
     if request.method == "POST":
         model = request.POST.get('model')
         process = request.POST.get('process')
@@ -46,5 +49,22 @@ def cam_up_load(request):
                             img=myfile
                             )
         new_record.save()
-        return render(request, 'CAM/cam-upload.html', {'messages': 'uploaded successfully'})
-    return render(request, 'CAM/cam-upload.html')
+        return redirect('/', {'messages': 'uploaded successfully'})
+    return render(request, 'CAM/cam-upload.html', {"custom": custom})
+
+
+def Updateimg(request, id_input):
+    updatefile =Cadcam.objects.get(id=id_input)
+    if request.method == "POST":
+        update_new = request.FILES['img']
+        if updatefile.img != update_new:
+            updatefile.img = update_new
+            updatefile.save()
+            return redirect('CAM/cam-upload.html.html')
+    return render(request,'CAM/update_cam.html', {'updatefile': updatefile})
+
+
+def index(request):
+    custom =Cadcam.objects.filter(deleted=False,type='Cadcam')
+    return render(request, 'CAM/index.html', {'custom': custom})
+
