@@ -1,7 +1,9 @@
 from django.urls import path
-from .views import view_cam_file, pqc_up_load
+from .views import index, comfirm_pqc
+
 
 urlpatterns = [
-    path('view/', view_cam_file, name="pqc_view"),
-    path('load/', pqc_up_load, name="pqc_upload"),
+    path('index', index, name="index_pqc"),
+    path('comfirm/<int:id_input>', comfirm_pqc, name="comfirm"),
+
 ]

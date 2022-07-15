@@ -6,3 +6,9 @@
 input{
      font-family: Arial, Helvetica, sans-serif;
 }
+
+footer{
+    position: absolute;
+    bottom: 0;
+    width: 84%;
+}

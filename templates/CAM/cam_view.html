@@ -1,7 +1,7 @@
 {% extends 'base/Base.html' %}
 {% load static %}
 {% block title %} 
-    <title>CAD/CAM view page</title>
+    <title>CAD/CAM View Page</title>
 {% endblock %}
 
 {% block content %}
@@ -11,7 +11,7 @@
         <div class="col-md-4">
             <h2>View PQC results</h2>
             <div>
-                <form class="form-group" action="{% url 'cad_cam_view' %}" method="post">
+                <form class="form-group" action="{% url 'view_pqc_result' %}" method="post">
                     {% if message %}
                         <div class="alert alert-danger">{{message}}</div>
                     {% endif %}
@@ -34,9 +34,19 @@
                         <option value="CNC9">CNC9</option>
                     </select>
                     <label for="ver1">Version:</label>
-                    <input class="form-control" type="text" id="ver1" name="version">
+                    <input class="form-control" type="text" id="ver1" name="version" list="version_list">
+                    <datalist id="version_list">
+                        {% for version in list_version %}
+                            <option value="{{version}}">
+                        {% endfor %}
+                    </datalist>
                     <label for="pg1">PG name:</label>
-                    <input class="form-control" type="text" id="pg1" name="pg_name">
+                    <input class="form-control" type="text" id="pg1" name="pg_name" list="pg_name-list">
+                    <datalist id="pg_name-list">
+                        {% for pg_name in list_pg_name %}
+                            <option value="{{pg_name}}">
+                        {% endfor %}
+                    </datalist>
                     <div class="mt-3 text-center">
                         <button type="submit" class="btn btn-danger">View PQC Results</button>
                     </div>
@@ -46,7 +56,7 @@
 
         <div class="col-md-8">
             <div style="min-height:79vh; max-height:79vh;" class="form-control">
-                <img src={% static img %} alt="{{img}}" width="100%" height="700hv"/>
+                <img src={% static pqc_img %} alt="{{pqc_img}}" width="100%" height="700hv"/>
             </div>
         </div>
     </div>

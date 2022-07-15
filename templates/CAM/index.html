@@ -27,6 +27,7 @@
                 <th>Version</th>
                 <th>Image</th>
                 <th>P/G Name</th>
+                 <th>Status</th>
                 <th>Action</th>
             </thead>
             {% for i in customers %}
@@ -36,12 +37,13 @@
                 <td>{{i.process}}</td>
                 <td>{{i.version}}</td>
                 <td>
-                    <a href="{% static i.img %}">{{i.get_image_name}}</a>
+                    <a href="{% static i.img %}" target="_blank">{{i.get_image_name}}</a>
                 </td>
                 <td>{{i.pg_name}}</td>
+                <td>{{i.status}}</td>
                 <td>
                     <a class="btn btn-info" href="{% url 'edit' i.id %}">Edit</a>
-                    <a class="btn btn-success" href="#">View</a>
+                    <a class="btn btn-success" href="{% url 'view_pqc_result' %}">View</a>
                 </td>
                 <td>
                     <form method="post" action="{% url 'deleted' i.id %}" onsubmit="return confirm('You are want to delete')">
