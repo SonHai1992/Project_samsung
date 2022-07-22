@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -19,43 +20,51 @@
     <div id="app">
         <div id="sidebar" class='active'>
             <div class="sidebar-wrapper active">
-    <div class="sidebar-header">
-        <img src="../../static/assets/images/logo1.png" alt="" srcset="">
-    </div>
-    <div class="sidebar-menu">
-        <ul class="menu">
-            <li class='sidebar-title'>Main Menu</li>
-            <li class="sidebar-item active ">
-                <a href="{% url 'home'%}" class='sidebar-link'>
-                    <i data-feather="home" width="20"></i> 
-                    <span>Home</span>
-                </a>
-            </li>
-            <li class="sidebar-item">
-                <a href="{% url 'index' %}" class='sidebar-link'>
-                    <i data-feather="triangle" width="20"></i>
-                    <span>CAD/CAM</span>
-                </a>
-            </li>
-            <li class="sidebar-item">
-                <a href="{% url 'index_pqc' %}" class='sidebar-link'>
-                    <i data-feather="briefcase" width="20"></i> 
-                    <span>PQC</span>
-                </a>
-            </li>
-        </ul>
-    </div>
-    <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>
-</div>
+                <div class="sidebar-header">
+                    <img src="{% static 'assets/images/logo/logo1.png' %}" alt="" srcset="">
+                </div>
+                <div class="sidebar-menu">
+                    <ul class="menu">
+                        <li class='sidebar-title'>Main Menu</li>
+                        <li class="sidebar-item {% block Home %} {% endblock %}" onclick="console.log(this)">
+                            <a href="{% url 'home'%}" class='sidebar-link'>
+                                <i data-feather="home" width="20"></i>
+                                <span>Home</span>
+                            </a>
+                        </li>
+
+                        {% if 'cad' in user.get_group_list  %}
+                        <li class="sidebar-item {% block CAD %} {% endblock %}">
+                            <a href="{% url 'index' %}" class='sidebar-link'>
+                                <i data-feather="triangle" width="20"></i>
+                                <span>CAD/CAM</span>
+                            </a>
+                        </li>
+                        {% endif %}
+                        {% if 'pqc' in user.get_group_list %}
+                        <li class="sidebar-item {% block PQC %} {% endblock %}">
+                            <a href="{% url 'index_pqc' %}" class='sidebar-link'>
+                                <i data-feather="briefcase" width="20"></i>
+                                <span>PQC</span>
+                            </a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </div>
+                <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>
+            </div>
         </div>
-    <div id="main">
+
+        <div id="main">
             <nav class="navbar navbar-header navbar-expand navbar-light">
                 <a class="sidebar-toggler" href="#"><span class="navbar-toggler-icon"></span></a>
+
                 <button class="btn navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
                     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
                     <ul class="navbar-nav d-flex align-items-center navbar-light ms-auto">
                         <li class="dropdown">
                             <a href="#" data-bs-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
@@ -65,41 +74,36 @@
                                 <div class="d-none d-md-block d-lg-inline-block">Hi, {{user}}</div>
                             </a>
                             <div class="dropdown-menu dropdown-menu-end">
-                                <!-- <a class="dropdown-item" href="#"><i data-feather="user"></i> Account</a>
-                                <a class="dropdown-item active" href="#"><i data-feather="mail"></i> Messages</a>
-                                <a class="dropdown-item" href="#"><i data-feather="settings"></i> Settings</a> -->
-                                <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="{% url 'logout_handler' %}"><i data-feather="log-out"></i> Logout</a>
                             </div>
                         </li>
                     </ul>
                 </div>
             </nav>
-            
+
             <div class="main-content container-fluid">
-                <!-- <div class="page-title">
-                    <h3>Home</h3>
-                    <p class="text-subtitle text-muted">A good dashboard to display your statistics</p>
-                </div> -->
+                {% block content_title %}
+
+                {% endblock %}
                 {% block content %}
-                
+
                 {% endblock %}
 
-
-                </section>
             </div>
-
-            <footer>
-                <div class="clearfix mb-0 text-muted">
-                    <div class="float-start">
-                        <p>2022 &copy; Hai Samsung </p>
-                    </div>
-                    <div class="float-end">
-                        <p>Developing with <span class='text-danger'><i data-feather="heart"></i></span> by <a href="#">CAD/CAM P</a></p>
-                    </div>
-                </div>
-            </footer>
         </div>
+    </div>
+    <footer>
+        <div class="clearfix text-muted">
+            <div class="float-start">
+                <p>2022 &copy; Hai Samsung </p>
+            </div>
+            <div class="float-end">
+                <p>Developing with <span class='text-danger'><i data-feather="heart"></i></span> by <a href="#">CAD/CAM P</a></p>
+            </div>
+        </div>
+    </footer>
+    <div id="show_img" onclick="hidePicture()" >
+        <img id="main_img" src="" alt="" width="80%" height="80%"  />
     </div>
     <script src="../../static/assets/js/feather-icons/feather.min.js"></script>
     <script src="../../static/assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
@@ -111,4 +115,7 @@
 
     <script src="../../static/assets/js/main.js"></script>
 </body>
+<script>
+
+</script>
 </html>

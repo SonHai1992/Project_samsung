@@ -1,8 +1,20 @@
-from django.db import models
+import datetime
+import dateparser
 
+from django.db import models
+from django.contrib.auth.models import User
 # Create your models here.
 
 PROCESS_OPTIONS = [(f'CNC{i}', f'CNC{i}') for i in range(3, 10)]
+
+ORDER_STATUS = [(0, 'OK'), (1, 'NG')]
+
+
+def get_group_list(self):
+    return list(self.groups.values_list('name', flat=True))
+
+
+User.add_to_class('get_group_list', get_group_list)
 
 
 class Cadcam(models.Model):
@@ -18,8 +30,11 @@ class Cadcam(models.Model):
     deleted = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     created_by = models.CharField(max_length=200)
-    modified_at = models.DateTimeField(auto_now=True)
+    modified_at = models.DateTimeField(null=True,blank=True)
     modified_by = models.CharField(max_length=200)
+    pqc_confirm_by = models.CharField(max_length=200, null=True, blank=True)
+    pqc_confirm_at = models.DateTimeField(null=True, blank=True)
+
 
     def get_image_name(self):
         limit_character = 5
@@ -30,3 +45,6 @@ class Cadcam(models.Model):
             return f"{new_name}.{name_split[-1]}"
         else:
             return f"{new_name}[...].{name_split[-1]}"
+
+    def get_submit_day(self):
+        return (datetime.datetime.now() - dateparser.parse(str(self.created_at).split(".")[0])).days

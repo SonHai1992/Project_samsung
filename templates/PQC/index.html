@@ -4,16 +4,18 @@
     <title>PQC Home</title>
 {% endblock %}
 
+{% block PQC %}active {% endblock %}
+
 {% block content %}
 <section class="section">
     <div class="row">
         <div class="col-md-8">
          </div>
         <div class="col-md-4">
-            <form class="input-group" method="post" action="#">
+            <form class="input-group" method="get"  action="{% url 'search_pqc' %}">
                 {% csrf_token %}
-                <input style="width:50%; margin-bottom:1px" class="form-control" type="search" placeholder="Search..." name="search>">
-                <button class="btn btn-dark" type="submit" name="#">Search</button>
+                <input style="width:50%; margin-bottom:1px" class="form-control" type="search" placeholder="Search..." name="search_pqc" required>
+                <button class="btn btn-dark" type="submit" >Search</button>
             </form>
         </div>
     </div>
@@ -40,7 +42,7 @@
                 <td>{{i.pg_name}}</td>
                 <td>{{i.status}}</td>
                 <td>
-                    <a class="btn btn-info" href="{% url 'comfirm' i.id %}">Comfirm</a>
+                    <a class="btn btn-info" href="{% url 'comfirm' i.id %}">Confirm</a>
                 </td>
             </tr>
             {% endfor %}

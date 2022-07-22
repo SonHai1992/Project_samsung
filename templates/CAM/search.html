@@ -14,9 +14,9 @@
              <a class="btn btn-primary" href="{% url 'cam_upload' %}">Upload</a>
          </div>
         <div class="col-md-4">
-            <form class="input-group"  action="{% url 'search' %}">
+            <form class="input-group"  action="">
                 {% csrf_token %}
-                <input name="search" style="width:50%; margin-bottom:1px" class="form-control" type="search" placeholder="Search..." required />
+                <input name="search" style="width:50%; margin-bottom:1px" class="form-control" type="search" placeholder="Search..." />
                 <button class="btn btn-dark" type="submit" >Search</button>
             </form>
         </div>
@@ -61,7 +61,7 @@
         <div style="text-align:center;">
             <span class="step-links">
                 {% if customers.has_previous %}
-                    <a href="?page={{ customers.previous_page_number }}">Previous</a>
+                    <a href="?search={{search}}&page={{ customers.previous_page_number }}">Previous</a>
                 {% endif %}
             </span>
 
@@ -71,7 +71,7 @@
 
             <span>
                 {% if customers.has_next %}
-                    <a href="?page={{ customers.next_page_number }}">Next</a>
+                    <a href="?search={{search}}&page={{ customers.next_page_number }}">Next</a>
                 {% endif %}
             </span>
         </div>

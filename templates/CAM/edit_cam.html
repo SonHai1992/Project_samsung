@@ -4,6 +4,8 @@
     <title>Edit CAD/CAM</title>
 {% endblock %}
 
+{% block CAD %}active {% endblock %}
+
 {% block content %}
 <div class="row">
     <div class="col-md-4">
@@ -42,7 +44,7 @@
     </div>
     <div class="col-md-8">
         <div style="min-height:79vh; max-height:79vh;" class="form-control">
-            <img src={% static edit_file.img %} alt="{{img.name}}" width="100%" height="700hv"/>
+            <img src={% static edit_file.img %} alt="{{img.name}}" width="100%" height="630hv"/>
         </div>
     </div>
 </div>
