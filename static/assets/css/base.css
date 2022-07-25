@@ -60,3 +60,7 @@ min-height: 94vh;
   display: none;
   }
 }
+
+td{
+    padding: 0.6rem 1.5rem !important;
+}

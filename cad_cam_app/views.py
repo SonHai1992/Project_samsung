@@ -10,7 +10,7 @@ from database.models import Cadcam, PROCESS_OPTIONS
 @login_required
 def index(request):
     custom =Cadcam.objects.filter(deleted=False).order_by('-pqc_confirm_at')
-    paginator = Paginator(custom,8)
+    paginator = Paginator(custom,10)
     pageNumber = request.GET.get('page')
     customers = paginator.get_page(pageNumber)
     return render(request, 'CAM/index.html', {'customers': customers})
