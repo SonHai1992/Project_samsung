@@ -1,0 +1,14 @@
+asgiref==3.5.2
+certifi 
+dateparser 
+Django==4.0.5
+django-chartjs==2.3.0
+python-dateutil
+pytz
+regex 
+six
+sqlparse==0.4.2
+tzdata==2022.1
+tzlocal
+wincertstore==0.2
+Pillow

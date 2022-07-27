@@ -9,7 +9,6 @@ from database.models import Cadcam
 def home_page(request):
     labels = list(set(list((Cadcam.objects.filter(deleted=False).values_list("model", flat=True)))))
     labels.sort()
-    print(labels)
 
     data1 = []
     data2 = []
