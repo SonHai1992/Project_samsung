@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import view_pqc_result, cam_up_load, index, Delete, Edit_upload, Search
+from .views import view_pqc_result, cam_up_load, index, Delete, Edit_upload, Search,export_users_xls
 
 urlpatterns = [
     path('view/<int:id_input>', view_pqc_result, name="view_pqc_result"),
@@ -8,4 +8,5 @@ urlpatterns = [
     path('edit/<int:id_input>', Edit_upload, name="edit"),
     path('search/', Search, name="search"),
     path('', index, name="index"),
+    path('excel/<int:id_input>', export_users_xls, name="excel"),
 ]

@@ -22,8 +22,10 @@ class Cadcam(models.Model):
     process = models.CharField(max_length=50, choices=PROCESS_OPTIONS)
     version = models.CharField(max_length=50)
     pg_name = models.CharField(max_length=100)
-    img = models.ImageField(null=True, blank=True, upload_to='CAD_CAM/%Y/%m/%d/')
-    pqc_img = models.ImageField(null=True, blank=True, upload_to='PQC/%Y/%m/%d/')
+    # img = models.ImageField(null=True, blank=True, upload_to='CAD_CAM/%Y/%m/%d/')
+    # pqc_img = models.ImageField(null=True, blank=True, upload_to='PQC/%Y/%m/%d/')
+    file_cam = models.FileField(null=True, blank=True, upload_to='CAD_CAM/%Y/%m/%d/')
+    file_pqc = models.FileField(null=True, blank=True, upload_to='PQC/%Y/%m/%d/')
     status = models.CharField(max_length=50,default='Waiting')
     reason = models.CharField(max_length=1000,null=True, blank=True)
     type = models.CharField(max_length=10)
@@ -35,6 +37,8 @@ class Cadcam(models.Model):
     pqc_confirm_by = models.CharField(max_length=200, null=True, blank=True)
     pqc_confirm_at = models.DateTimeField(null=True, blank=True)
 
+    # class Meta:
+    #     db_table = "CAM"
 
     def get_image_name(self):
         limit_character = 5
@@ -48,3 +52,16 @@ class Cadcam(models.Model):
 
     def get_submit_day(self):
         return (datetime.datetime.now() - dateparser.parse(str(self.created_at).split(".")[0])).days
+
+
+class Images(models.Model):
+    name = models.ForeignKey(Cadcam,on_delete=models.CASCADE)
+    img_cam = models.ImageField(null=True, blank=True, upload_to='CAD_CAM/%Y/%m/%d/')
+    img_pqc = models.ImageField(null=True, blank=True, upload_to='CAD_CAM/%Y/%m/%d/')
+    deleted = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    created_by = models.CharField(null=True, blank=True, max_length=200)
+    modified_at = models.DateTimeField(null=True, blank=True)
+    modified_by = models.CharField(null=True, blank=True,max_length=200)
+    pqc_confirm_by = models.CharField(max_length=200, null=True, blank=True)
+    pqc_confirm_at = models.DateTimeField(null=True, blank=True)
