@@ -5,6 +5,14 @@
 {% endblock %}
 {% block CAD %}active {% endblock %}
 {% block content %}
+<style>
+    .hover-shadow:hover{
+        box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2),0 6px 20px 0 rgba(0, 0, 0, 0.19) !important;
+        margin-top: 2px;
+        margin-bottom: 2px;
+        border: 2px solid red;
+    }
+</style>
 <div class="row">
     <div class="col-md-4">
         <h2>CAD/CAM Part Up Load File Modify</h2>
@@ -14,7 +22,7 @@
                 {{ messages }}
                 {% endif %}
             </div>
-            <form class="form-group" action="{% url 'cam_upload' %}" method="post" enctype="multipart/form-data">
+            <form class="form-group" id="form-data" action="{% url 'cam_upload' %}" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <label for="model1">Model:</label>
                 <input class="form-control" type="text" id="model1" name="model">
@@ -33,11 +41,11 @@
                 <label for="pg1">PG name:</label>
                 <input class="form-control" type="text" id="pg1" name="pg_name" required>
                 <label for="myFile">Up Images:</label>
-                <input class="form-control" type="file" id="myFile" name="img" multiple required>
+                <input class="form-control" type="file" id="myFile" name="img" onChange="checkFileName_jpg('myFile')" multiple required>
                 <label for="myFile">Up Files:</label>
                 <input class="form-control" type="file" id="excel" name="excel" onChange="checkFileName('excel');" >
                 <div class="mt-3 text-center">
-                    <button type="submit" class="btn btn-danger">Submit</button>
+                    <button class="btn btn-danger" onclick="clear_form()">Submit</button>
                 </div>
             </form>
 
@@ -49,14 +57,14 @@
                 <div class="col-md-2" style="height:76vh;overflow:auto;"  >
                      {% for image in img %}
                     <a href="#" onclick="showPicture('{% static image %}')" >
-                        <img id="img_1" src={% static image %} alt="{{image}}" width="100%" style="margin-top:2px;" />
+                        <img class="hover-shadow" src={% static image %} alt="{{image}}" width="100%" style="margin-top:2px;" />
                     </a>
                     {% endfor %}
                 </div>
                 <div class="col-md-10">
                     <div>
                         <div id="show_image">
-                            <img id="main_image" src="" alt="" width="98%"  />
+                            <img id="main_image" src="{% static img.0 %}" alt="" width="98%"  />
                         </div>
                     </div>
                 </div>
@@ -68,7 +76,6 @@
     function showPicture(img_url) {
             let main_img = document.getElementById('main_image');
             let ma_img = document.getElementById('img_1');
-            ma_img.style.border = "3px solid red";
             main_img.src = img_url;
 
         }
@@ -77,7 +84,7 @@
            let fileinput = document.getElementById(id);
            let filename = fileinput.files[0].name
            let message_element = document.getElementById("message");
-           let white_list = ["xlsx", "xls", "pdf"]
+           let white_list =  ["xlsx", "xls", "pdf",'pptx']
            let file_extension = filename.split(".").at(-1)
 
            if (filename && !white_list.includes(file_extension)){
@@ -88,6 +95,35 @@
                 message_element.innerHTML = "";
                 message_element.classList.remove("alert", "alert-danger");
            }
+    }
+    function checkFileName_jpg(id) {
+           let fileinput = document.getElementById(id);
+           let filename = fileinput.files[0].name
+           let message_element = document.getElementById("message");
+           let white_list = ["jpg"]
+           let file_extension = filename.split(".").at(-1)
+
+           if (filename && !white_list.includes(file_extension)){
+                message_element.innerHTML = "File invalid";
+                message_element.classList.add("alert", "alert-danger");
+                fileinput.value = null;
+           }else{
+                message_element.innerHTML = "";
+                message_element.classList.remove("alert", "alert-danger");
+           }
+    }
+
+    function clear_form(){
+
+        let form = document.getElementById('form-data');
+        form.submit()
+        form.reset();
+        document.getElementById('model1').value='';
+        document.getElementById('ver1').value='';
+        document.getElementById('pg1').value='';
+        document.getElementById('myFile').value='';
+        document.getElementById('excel').value='';
+        return False;
     }
 </script>
 {% endblock %}

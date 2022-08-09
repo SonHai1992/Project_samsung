@@ -3,6 +3,7 @@ import dateparser
 
 from django.db import models
 from django.contrib.auth.models import User
+
 # Create your models here.
 
 PROCESS_OPTIONS = [(f'CNC{i}', f'CNC{i}') for i in range(3, 10)]
@@ -22,17 +23,15 @@ class Cadcam(models.Model):
     process = models.CharField(max_length=50, choices=PROCESS_OPTIONS)
     version = models.CharField(max_length=50)
     pg_name = models.CharField(max_length=100)
-    # img = models.ImageField(null=True, blank=True, upload_to='CAD_CAM/%Y/%m/%d/')
-    # pqc_img = models.ImageField(null=True, blank=True, upload_to='PQC/%Y/%m/%d/')
     file_cam = models.FileField(null=True, blank=True, upload_to='CAD_CAM/%Y/%m/%d/')
     file_pqc = models.FileField(null=True, blank=True, upload_to='PQC/%Y/%m/%d/')
-    status = models.CharField(max_length=50,default='Waiting')
-    reason = models.CharField(max_length=1000,null=True, blank=True)
+    status = models.CharField(max_length=50, default='Waiting')
+    reason = models.CharField(max_length=1000, null=True, blank=True)
     type = models.CharField(max_length=10)
     deleted = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     created_by = models.CharField(max_length=200)
-    modified_at = models.DateTimeField(null=True,blank=True)
+    modified_at = models.DateTimeField(null=True, blank=True)
     modified_by = models.CharField(max_length=200)
     pqc_confirm_by = models.CharField(max_length=200, null=True, blank=True)
     pqc_confirm_at = models.DateTimeField(null=True, blank=True)
@@ -54,14 +53,20 @@ class Cadcam(models.Model):
         return (datetime.datetime.now() - dateparser.parse(str(self.created_at).split(".")[0])).days
 
 
-class Images(models.Model):
-    name = models.ForeignKey(Cadcam,on_delete=models.CASCADE)
+class Images_cam(models.Model):
+    name = models.ForeignKey(Cadcam, on_delete=models.CASCADE)
     img_cam = models.ImageField(null=True, blank=True, upload_to='CAD_CAM/%Y/%m/%d/')
-    img_pqc = models.ImageField(null=True, blank=True, upload_to='CAD_CAM/%Y/%m/%d/')
     deleted = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     created_by = models.CharField(null=True, blank=True, max_length=200)
     modified_at = models.DateTimeField(null=True, blank=True)
-    modified_by = models.CharField(null=True, blank=True,max_length=200)
+    modified_by = models.CharField(null=True, blank=True, max_length=200)
+
+
+
+class Images_pqc(models.Model):
+    name = models.ForeignKey(Cadcam, on_delete=models.CASCADE)
+    img_pqc = models.ImageField(null=True, blank=True, upload_to='PQC/%Y/%m/%d/')
+    deleted = models.BooleanField(default=False)
     pqc_confirm_by = models.CharField(max_length=200, null=True, blank=True)
     pqc_confirm_at = models.DateTimeField(null=True, blank=True)

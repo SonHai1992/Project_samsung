@@ -43,9 +43,24 @@
         </div>
     </div>
     <div class="col-md-8">
-        <div style="min-height:79vh; max-height:79vh;" class="form-control">
-            <img src={% static edit_file.img %} alt="{{img.name}}" width="100%" height="630hv"/>
-        </div>
+         <div style="min-height:79vh; max-height:79vh; " class='form-control'>
+            <div class="row">
+                <div class="col-md-2" style="height:76vh;overflow:auto;"  >
+                     {% for image in img %}
+                    <a href="#" onclick="showPicture('{% static image %}')" >
+                        <img class="hover-shadow" src={% static image %} alt="{{image}}" width="100%" style="margin-top:2px;" />
+                    </a>
+                    {% endfor %}
+                </div>
+                <div class="col-md-10">
+                    <div>
+                        <div id="show_image">
+                            <img id="main_image" src="{% static img.0 %}" alt="" width="98%"  />
+                        </div>
+                    </div>
+                </div>
+            </div>
+       </div>
     </div>
 </div>
 {% endblock %}s

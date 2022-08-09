@@ -3,10 +3,11 @@ from django.contrib.auth.decorators import login_required
 from django.template.context_processors import request
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import datetime
-from database.models import Cadcam, PROCESS_OPTIONS, Images
+from database.models import Cadcam, PROCESS_OPTIONS, Images_cam, Images_pqc
 from django.contrib.auth.models import User
 import xlwt
 from PIL import Image
+from django.db.models import Q
 
 
 # Create your views here.
@@ -22,8 +23,14 @@ def index(request):
 @login_required
 def view_pqc_result(request, id_input):
     list_view = Cadcam.objects.get(id=id_input)
+    list_img_cam = Images_cam.objects.filter(name=list_view)
+    list_img_pqc = Images_pqc.objects.filter(name=list_view)
+    img_cam_list = list_img_cam.values_list("img_cam", flat=True)
+    img_pqc_list = list_img_pqc.values_list("img_pqc", flat=True)
     return render(request, 'CAM/cam_view.html',
-                  {'list_view': list_view, "PROCESS_OPTIONS": PROCESS_OPTIONS, "id_input": id_input})
+                  {'list_view': list_view, 'img_cam_list': img_cam_list, 'img_pqc_list': img_pqc_list,
+                   "PROCESS_OPTIONS": PROCESS_OPTIONS,
+                   "id_input": id_input})
 
 
 @login_required
@@ -48,13 +55,14 @@ def cam_up_load(request):
         new_record.save()
         a = []
         for image in myfile:
-            new_img = Images(name=new_record,
+            new_img = Images_cam(name=new_record,
                              img_cam=image
                              )
             new_img.save()
             a.append(new_img.img_cam.name)
-        return render(request, 'CAM/cam-upload.html', {'img': a, 'messages': 'uploaded successfully'})
-    return render(request, 'CAM/cam-upload.html', {"custom": custom, "PROCESS_OPTIONS": PROCESS_OPTIONS})
+        return redirect("cam_upload")
+    return render(request, 'CAM/cam-upload.html',
+                  {"custom": custom, "PROCESS_OPTIONS": PROCESS_OPTIONS, 'messages': ''})
 
 
 @login_required
@@ -69,6 +77,8 @@ def Delete(request, id_input):
 @login_required
 def Edit_upload(request, id_input):
     edit_file = Cadcam.objects.get(id=id_input)
+    edit_img = Images_cam.objects.get(name=edit_file, id=id_input)
+
     if request.method == "POST":
         model = request.POST.get('model')
         process = request.POST.get('process')
@@ -93,8 +103,9 @@ def Edit_upload(request, id_input):
 def Search(request):
     search = request.GET.get('search', '')
     pageNumber = request.GET.get('page')
-    custom = Cadcam.objects.filter(model__icontains=search, deleted=False)
-    paginator = Paginator(custom, 8)
+    custom = Cadcam.objects.filter(
+        Q(model__icontains=search) | Q(process__icontains=search) | Q(version__icontains=search), deleted=False)
+    paginator = Paginator(custom, 10)
     customers = paginator.get_page(pageNumber)
     return render(request, 'CAM/search.html', {'search': search, 'customers': customers})
 
