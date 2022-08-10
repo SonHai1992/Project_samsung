@@ -1,0 +1,66 @@
+{% extends 'base/Base.html' %}
+{% load static %}
+{% block title %}
+    <title>Edit CAD/CAM</title>
+{% endblock %}
+
+{% block CAD %}active {% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4">
+        <h2>CAD/CAM Part Edit File Upload</h2>
+        <div>
+            {% if messages %}
+            <div class="alert alert-success">
+                {{ messages }}
+            </div>
+            {% endif %}
+            <form class="form-group" action="{% url 'edit' edit_file.id  %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <label for="model1">Model:</label>
+                <input class="form-control" type="text" id="model1" name="model" value="{{edit_file.model}}" >
+                <label for="cnc1">Process:</label>
+                <select class="form-control" id="cnc1" name="process">
+                    {% for i in PROCESS_OPTIONS %}
+                        <option value="{{ i.0 }}"
+                            {% if edit_file.process == i.0 %}
+                            selected
+                            {% endif%}
+                        >{{i.1}}</option>
+                    {% endfor %}
+                </select>
+                <label for="ver1">Version:</label>
+                <input class="form-control" type="text" id="ver1" name="version" value="{{edit_file.version}}">
+                <label for="pg1">PG name:</label>
+                <input class="form-control" type="text" id="pg1" name="pg_name" value="{{edit_file.pg_name}}">
+                <input class="form-control mt-3" type="file" id="myFile" name="img" required>
+                <div class="mt-3 text-center">
+                    <button type="submit" class="btn btn-info">Save</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+    <div class="col-md-8">
+         <div style="min-height:79vh; max-height:79vh; " class='form-control'>
+            <div class="row">
+                <div class="col-md-2" style="height:76vh;overflow:auto;"  >
+                     {% for image in img %}
+                    <a href="#" onclick="showPicture('{% static image %}')" >
+                        <img class="hover-shadow" src={% static image %} alt="{{image}}" width="100%" style="margin-top:2px;" />
+                    </a>
+                    {% endfor %}
+                </div>
+                <div class="col-md-10">
+                    <div>
+                        <div id="show_image">
+                            <img id="main_image" src="{% static img.0 %}" alt="" width="98%"  />
+                        </div>
+                    </div>
+                </div>
+            </div>
+       </div>
+    </div>
+</div>
+{% endblock %}s

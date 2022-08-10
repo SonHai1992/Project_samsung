@@ -1,0 +1,79 @@
+{% extends 'base/Base.html' %}
+{% load static %}
+{% block title %} 
+    <title>CAD/CAM Home</title>
+{% endblock %}
+
+{% block CAD %}active {% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="row">
+         <div class="col-md-8">
+             <label>Upload New File ➽</label>
+             <a class="btn btn-primary" href="{% url 'cam_upload' %}">Upload</a>
+         </div>
+        <div class="col-md-4">
+            <form class="input-group"  action="">
+                {% csrf_token %}
+                <input name="search" style="width:50%; margin-bottom:1px" class="form-control" type="search" placeholder="Search..." />
+                <button class="btn btn-dark" type="submit" >Search</button>
+            </form>
+        </div>
+    </div>
+        <table  class="table table-hover" style="text-align: center;padding:5px !important;">
+            <thead>
+                <th>No.</th>
+                <th>Model</th>
+                <th>Process</th>
+                <th>Version</th>
+                <th>Image</th>
+                <th>P/G Name</th>
+                 <th>Status</th>
+                <th>Action</th>
+            </thead>
+            {% for i in customers %}
+            <tr>
+                <td>{{ forloop.counter}}</td>
+                <td>{{i.model}}</td>
+                <td>{{i.process}}</td>
+                <td>{{i.version}}</td>
+                <td>
+                    <a href="{% static i.img %}" target="_blank">{{i.get_image_name}}</a>
+                </td>
+                <td>{{i.pg_name}}</td>
+                <td>{{i.status}}</td>
+                <td>
+                    {% if i.status == "Waiting" %}
+                    <a class="btn btn-info" href="{% url 'edit' i.id %}">Edit</a>
+                    {% endif%}
+                    <a class="btn btn-success" href="{% url 'view_pqc_result' i.id %}">View</a>
+                </td>
+                <td>
+                    <form method="post" action="{% url 'deleted' i.id %}" onsubmit="return confirm('You are want to delete')">
+                         {% csrf_token %}
+                        <button class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        <div style="text-align:center;">
+            <span class="step-links">
+                {% if customers.has_previous %}
+                    <a href="?search={{search}}&page={{ customers.previous_page_number }}">Previous</a>
+                {% endif %}
+            </span>
+
+            <span class="current">
+                Page {{ customers.number }} of {{ customers.paginator.num_pages }}
+            </span>
+
+            <span>
+                {% if customers.has_next %}
+                    <a href="?search={{search}}&page={{ customers.next_page_number }}">Next</a>
+                {% endif %}
+            </span>
+        </div>
+</section>
+{% endblock %}

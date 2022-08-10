@@ -1,0 +1,63 @@
+{% extends 'base/Base.html' %}
+{% load static %}
+{% block title %}
+    <title>PQC Home</title>
+{% endblock %}
+
+{% block PQC %}active {% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="row">
+        <div class="col-md-8">
+         </div>
+        <div class="col-md-4">
+            <form class="input-group" method="get"  action="{% url 'search_pqc' %}">
+                {% csrf_token %}
+                <input style="width:50%; margin-bottom:1px" class="form-control" type="search" placeholder="Search..." name="search_pqc" required>
+                <button class="btn btn-dark" type="submit" >Search</button>
+            </form>
+        </div>
+    </div>
+        <table  class="table table-hover" style="text-align: center;">
+            <thead>
+                <th>No.</th>
+                <th>Model</th>
+                <th>Process</th>
+                <th>Version</th>
+                <th>P/G Name</th>
+                 <th>Status</th>
+                <th>Action</th>
+            </thead>
+            {% for i in customers %}
+            <tr>
+                <td>{{ forloop.counter}}</td>
+                <td>{{i.model}}</td>
+                <td>{{i.process}}</td>
+                <td>{{i.version}}</td>
+                <td>{{i.pg_name}}</td>
+                <td>{{i.status}}</td>
+                <td>
+                    <a class="btn btn-info" href="{% url 'comfirm' i.id %}">Confirm</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        <div style="text-align:center;">
+            <span class="step-links">
+                {% if customers.has_previous %}
+                    <a href="?page={{ customers.previous_page_number }}">Previous</a>
+                {% endif %}
+            </span>
+
+            <span class="current">
+                Page {{ customers.number }} of {{ customers.paginator.num_pages }}.
+            </span>
+
+            <span>
+                {% if customers.has_next %}
+                    <a href="?page={{ customers.next_page_number }}">Next</a>
+                {% endif %}
+            </span>
+        </div>
+{% endblock %}

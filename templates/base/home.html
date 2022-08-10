@@ -1,0 +1,74 @@
+{% extends 'base/Base.html' %}
+{% load static %}
+{% block title %} 
+    <title>Home</title>
+    <script src="{% static 'js/chart.min.js' %}"></script>
+{% endblock %}
+{% block Home %}active {% endblock %}
+{% block content_title %}
+    <h2>Chart</h2>
+{% endblock %}
+
+
+{% block content %}
+<div style="width:95%;" >
+    <canvas id="chart" ></canvas>
+</div>
+
+<script >
+    const _chart_Colors = {
+        red: 'rgb(255, 99, 132)',
+        orange: 'rgb(255, 159, 64)',
+        yellow: 'rgb(255, 205, 86)',
+        green: 'rgb(75, 192, 192)',
+        blue: 'rgb(54, 162, 235)',
+        purple: 'rgb(153, 102, 255)',
+        grey: 'rgb(201, 203, 207)'
+    };
+     const labels = '{{labels}}'.split(", ")
+     const data = {
+      labels: labels,
+      datasets: [
+        {
+          label: 'OK',
+          data: {{data1}},
+          backgroundColor: _chart_Colors.blue,
+        },
+         {
+          label: 'Waiting',
+          data: {{data3}},
+          backgroundColor: _chart_Colors.green,
+        },
+        {
+          label: 'NG',
+          data: {{data2}},
+          backgroundColor: _chart_Colors.red,
+        },
+      ]
+    };
+
+    let cty = document.getElementById("chart");
+    let ctx = cty.getContext("2d");
+    let chart = new Chart(ctx, {
+        type: 'bar',
+          data: data,
+          options: {
+            plugins: {
+              title: {
+                display: false,
+                text: 'Chart.js Bar Chart - Stacked'
+              },
+            },
+            responsive: true,
+            scales: {
+              x: {
+                stacked: true,
+              },
+              y: {
+                stacked: true
+              }
+            }
+          }
+    });
+</script>
+{% endblock %}
