@@ -84,7 +84,7 @@
            let fileinput = document.getElementById(id);
            let filename = fileinput.files[0].name
            let message_element = document.getElementById("message");
-           let white_list =  ["xlsx", "xls", "pdf",'pptx']
+           let white_list =  ["xlsx", "xls", "pdf",'pptx','docx','doc']
            let file_extension = filename.split(".").at(-1)
 
            if (filename && !white_list.includes(file_extension)){
@@ -100,7 +100,7 @@
            let fileinput = document.getElementById(id);
            let filename = fileinput.files[0].name
            let message_element = document.getElementById("message");
-           let white_list = ["jpg"]
+           let white_list = ["jpg","JPN","jpn"]
            let file_extension = filename.split(".").at(-1)
 
            if (filename && !white_list.includes(file_extension)){
