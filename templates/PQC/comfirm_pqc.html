@@ -1,45 +1,56 @@
 {% extends 'base/Base.html' %}
 {% load static %}
 {% block title %}
-    <title>PQC Confirm</title>
+<title>PQC Confirm</title>
 {% endblock %}
 
 {% block PQC %}active {% endblock %}
 
 {% block content %}
+<style>
+    .hover-shadow:hover{
+        box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2),0 6px 20px 0 rgba(0, 0, 0, 0.19) !important;
+        margin-top: 2px;
+        margin-bottom: 2px;
+        border: 2px solid red;
+    }
+
+</style>
 <div class="row">
     <div class="col-md-4">
         <h2>PQC Part Confirm File Upload</h2>
         <div>
-            {% if messages %}
-            <div class="alert alert-success">
+            <div id="message">
+                {% if messages %}
                 {{ messages }}
+                {% endif %}
             </div>
-            {% endif %}
-            <form class="form-group" action="{% url 'comfirm' comfirm.id  %}" method="post" enctype="multipart/form-data">
+            <form class="form-group" action="{% url 'comfirm' comfirm.id  %}" method="post"
+                  enctype="multipart/form-data">
                 {% csrf_token %}
                 <label for="model1">Model:</label>
                 <select class="form-control" id="model1" name="model">
-                    <option value="{{comfirm.model}}">{{comfirm.model}} </option>
+                    <option value="{{comfirm.model}}">{{comfirm.model}}</option>
                 </select>
                 <label for="cnc1">Process:</label>
                 <select class="form-control" id="cnc1" name="process">
-                    <option value="{{comfirm.process}}">{{comfirm.process}} </option>
+                    <option value="{{comfirm.process}}">{{comfirm.process}}</option>
                 </select>
                 <label for="ver1">Version:</label>
                 <select class="form-control" id="ver1" name="version">
-                    <option value="{{comfirm.version}}">{{comfirm.version}} </option>
+                    <option value="{{comfirm.version}}">{{comfirm.version}}</option>
                 </select>
                 <label for="pg1">PG name:</label>
                 <select class="form-control" id="pg1" name="pg_name">
-                    <option value="{{comfirm.pg_name}}">{{comfirm.pg_name}} </option>
+                    <option value="{{comfirm.pg_name}}">{{comfirm.pg_name}}</option>
                 </select>
                 <label>Cam_file:</label>
-                <button class="form-control"><a href="{% static comfirm.file_cam %}">{{comfirm.file_cam}}</a></button>
-                <label for="myFile">Up Images:</label>
-                <input class="form-control " type="file" id="myFile" name="pqc_img" multiple required/>
-                 <label for="myImg">Up Files:</label>
-                <input class="form-control " type="file" id="myImg" name="myImg" />
+                <button class="form-control"><a href="{% static comfirm.file_cam %}" download="{% static comfirm.file_cam %}">{{comfirm.get_file_cam}}</a>
+                </button>
+                <label for="myImg">Up Images:</label>
+                <input class="form-control " type="file" id="myImg" name="pqc_img" onChange="checkFileName_jpg('myImg')" multiple required/>
+                <label for="myFile">Up Files:</label>
+                <input class="form-control " type="file" id="myFile" name="myImg" onChange="checkFileName('myFile');"/>
                 <label for="pg1">Confirm:</label>
                 <select class="form-control" id="status" name="status" onChange="reason_control();" style="width:20%">
                     {% for j in ORDER_STATUS %}
@@ -47,7 +58,7 @@
                     {% endfor %}
                 </select>
                 <label for="reason">Reason:</label>
-                <textarea  id="reason" name="reason" class="form-control" style="resize:none;" required></textarea>
+                <textarea id="reason" name="reason" class="form-control" style="resize:none;" required></textarea>
                 <div class="mt-3 text-center">
                     <button type="submit" class="btn btn-info">SAVE</button>
                 </div>
@@ -56,28 +67,41 @@
         </div>
     </div>
     <div class="col-md-8">
-        <div style="min-height:79vh; max-height:79vh;" class="form-control">
-            <a href="#" onclick="showPicture('{% static comfirm.img %}')">
-                <img src={% static comfirm.img %} alt="{{img.name}}" width="100%" height="630hv"/>
-            </a>
+        <div style="min-height:79vh; max-height:79vh; " class='form-control'>
+            <div class="row">
+                <div class="col-md-2" style="height:76vh;overflow:auto;">
+                    {% for image in list_img_cam %}
+                    <a href="#" onclick="displayPicture('{% static image %}')">
+                        <img class="hover-shadow" src={% static image %} alt="{{image}}" width="100%" style="margin-top:2px;"/>
+                    </a>
+                    {% endfor %}
+                </div>
+                <div class="col-md-10">
+                    <div>
+                        <div id="show_image">
+                            <a href="#" onclick="showPicture('image_2')">
+                                <img id="image_2" src="{% static list_img_cam.0 %}" alt="" width="98%"/>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
 <!--JS PQC choice status NG display textarea-->
 <script>
-<!--    function reason_control() {-->
-<!--        let status = document.getElementById("status")-->
 
-<!--        if (status.value == "NG") {-->
-<!--            reason.style.display = "block";-->
-<!--        }else{-->
-<!--            reason.style.display = "none";-->
-<!--        }-->
+      function displayPicture(img_url) {
+            let main_img = document.getElementById('image_2');
+            main_img.src = img_url;
 
-<!--    }-->
+        }
 
-    function showPicture(img_url) {
+         function showPicture(img) {
+            let image_instance = document.getElementById(img);
+            let img_url = image_instance.src;
             let show_div = document.getElementById('show_img');
             let main_img = document.getElementById('main_img');
             main_img.src = img_url;
@@ -88,5 +112,49 @@
             let show_div = document.getElementById('show_img');
             show_div.style.display = "none";
         }
+
+
+    function checkFileName(id) {
+           let fileinput = document.getElementById(id);
+           let filename = fileinput.files[0].name
+           let message_element = document.getElementById("message");
+           let white_list =  ["xlsx", "xls", "pdf",'pptx','docx','doc']
+           let file_extension = filename.split(".").at(-1)
+
+           if (filename && !white_list.includes(file_extension)){
+                message_element.innerHTML = "File invalid";
+                message_element.classList.add("alert", "alert-danger");
+                fileinput.value = null;
+           }else{
+                message_element.innerHTML = "";
+                message_element.classList.remove("alert", "alert-danger");
+           }
+    }
+    function checkFileName_jpg(id) {
+           let fileinput = document.getElementById(id);
+           let filename = fileinput.files[0].name
+           let message_element = document.getElementById("message");
+           let white_list = ["jpg","JPN","jpn"]
+           let file_extension = filename.split(".").at(-1)
+
+           if (filename && !white_list.includes(file_extension)){
+                message_element.innerHTML = "File invalid";
+                message_element.classList.add("alert", "alert-danger");
+                fileinput.value = null;
+           }else{
+                message_element.innerHTML = "";
+                message_element.classList.remove("alert", "alert-danger");
+           }
+    }
+
+
+<!--    function reason_control() {-->
+<!--        let status = document.getElementById("status")-->
+
+<!--        if (status.value == "NG") {-->
+<!--            reason.style.display = "block";-->
+<!--        }else{-->
+<!--            reason.style.display = "none";-->
+
 </script>
 {% endblock %}

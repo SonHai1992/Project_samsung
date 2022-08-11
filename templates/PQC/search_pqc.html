@@ -26,7 +26,8 @@
                 <th>Process</th>
                 <th>Version</th>
                 <th>P/G Name</th>
-                 <th>Status</th>
+                <th>Status</th>
+                <th>Time Delay</th>
                 <th>Action</th>
             </thead>
             {% for i in customers %}
@@ -37,6 +38,7 @@
                 <td>{{i.version}}</td>
                 <td>{{i.pg_name}}</td>
                 <td>{{i.status}}</td>
+                <td style="color:red;">{{i.get_submit_day}} day</td>
                 <td>
                     <a class="btn btn-info" href="{% url 'comfirm' i.id %}">Comfirm</a>
                 </td>

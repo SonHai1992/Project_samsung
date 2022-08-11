@@ -49,6 +49,14 @@ class Cadcam(models.Model):
         else:
             return f"{new_name}[...].{name_split[-1]}"
 
+    def get_file_cam(self):
+        main_file = self.file_cam.name.split('/')[-1]
+        return main_file
+
+    def get_file_pqc(self):
+        main_file_pqc = self.file_pqc.name.split('/')[-1]
+        return main_file_pqc
+
     def get_submit_day(self):
         return (datetime.datetime.now() - dateparser.parse(str(self.created_at).split(".")[0])).days
 
@@ -61,7 +69,6 @@ class Images_cam(models.Model):
     created_by = models.CharField(null=True, blank=True, max_length=200)
     modified_at = models.DateTimeField(null=True, blank=True)
     modified_by = models.CharField(null=True, blank=True, max_length=200)
-
 
 
 class Images_pqc(models.Model):

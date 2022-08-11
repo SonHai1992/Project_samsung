@@ -25,6 +25,8 @@ def index(request):
 @login_required
 def comfirm_pqc(request, id_input):
     comfirm = Cadcam.objects.get(id=id_input)
+    img_cam = Images_cam.objects.filter(name=comfirm)
+    list_img_cam = img_cam.values_list("img_cam", flat=True)
     img_confrim = Images_pqc.objects.filter(name=comfirm)
     if request.method == "POST":
         my_status = request.POST.get('status')
@@ -47,7 +49,8 @@ def comfirm_pqc(request, id_input):
             b.append(new_img.img_pqc.name)
         return redirect('index_pqc')
     return render(request, 'PQC/comfirm_pqc.html',
-                  {'comfirm': comfirm, 'img_confrim': img_confrim, 'ORDER_STATUS': ORDER_STATUS})
+                  {'comfirm': comfirm, 'img_confrim': img_confrim, 'list_img_cam': list_img_cam,
+                   'ORDER_STATUS': ORDER_STATUS})
 
 
 @login_required

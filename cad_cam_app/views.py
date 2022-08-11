@@ -8,6 +8,8 @@ from django.contrib.auth.models import User
 import xlwt
 from PIL import Image
 from django.db.models import Q
+import os
+from project.settings import BASE_DIR, MEDIA_ROOT
 
 
 # Create your views here.
@@ -56,8 +58,8 @@ def cam_up_load(request):
         a = []
         for image in myfile:
             new_img = Images_cam(name=new_record,
-                             img_cam=image
-                             )
+                                 img_cam=image
+                                 )
             new_img.save()
             a.append(new_img.img_cam.name)
         return redirect("cam_upload")
@@ -77,26 +79,58 @@ def Delete(request, id_input):
 @login_required
 def Edit_upload(request, id_input):
     edit_file = Cadcam.objects.get(id=id_input)
-    edit_img = Images_cam.objects.get(name=edit_file, id=id_input)
+
+    # delete database
+    img_cam = Images_cam.objects.filter(name=edit_file)
+
+    old_id = img_cam.values_list('id', flat=True)
+    old_id_copy = list(old_id).copy()
+    # delete file local
+    list_cam_img = img_cam.values_list('img_cam', flat=True)
 
     if request.method == "POST":
+        # except Exception as e:
+        #     print(e)
+
+        old_excel_file = edit_file.file_cam
+
         model = request.POST.get('model')
         process = request.POST.get('process')
         version = request.POST.get('version')
         pg_name = request.POST.get('pg_name')
-        img = request.FILES['img']
+        myfile_img = request.FILES.getlist('img')
+        excel_file = request.FILES.get('excel')
         created_by = request.user.username
-
         edit_file.model = model
         edit_file.process = process
         edit_file.version = version
         edit_file.pg_name = pg_name
-        edit_file.img = img
+        if excel_file:
+            edit_file.file_cam = excel_file
         edit_file.modified_at = datetime.datetime.now()
         edit_file.modified_by = created_by
         edit_file.save()
+
+        for image in myfile_img:
+            new_img = Images_cam(name=edit_file,
+                                 img_cam=image
+                                 )
+            new_img.save()
+
+        for i in Images_cam.objects.filter(id__in=list(old_id_copy)):
+            try:
+                os.remove(f"{BASE_DIR}/media/{i.img_cam}")
+            except Exception as e:
+                pass
+            i.delete()
+
+        if excel_file and old_excel_file:
+            print("runnnnnnnnnnnnnnn", old_excel_file)
+            os.remove(f"{BASE_DIR}/media/{old_excel_file}")
+
         return redirect('index')
-    return render(request, 'CAM/edit_cam.html', {'edit_file': edit_file, "PROCESS_OPTIONS": PROCESS_OPTIONS})
+    return render(request, 'CAM/edit_cam.html',
+                  {'edit_file': edit_file, 'list_cam_img': list_cam_img, "PROCESS_OPTIONS": PROCESS_OPTIONS})
 
 
 @login_required

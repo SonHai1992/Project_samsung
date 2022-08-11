@@ -7,15 +7,23 @@
 {% block CAD %}active {% endblock %}
 
 {% block content %}
+<style>
+    .hover-shadow:hover{
+        box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2),0 6px 20px 0 rgba(0, 0, 0, 0.19) !important;
+        margin-top: 2px;
+        margin-bottom: 2px;
+        border: 2px solid red;
+    }
+</style>
 <div class="row">
     <div class="col-md-4">
         <h2>CAD/CAM Part Edit File Upload</h2>
         <div>
-            {% if messages %}
-            <div class="alert alert-success">
+            <div id="message">
+                {% if messages %}
                 {{ messages }}
+                {% endif %}
             </div>
-            {% endif %}
             <form class="form-group" action="{% url 'edit' edit_file.id  %}" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <label for="model1">Model:</label>
@@ -34,7 +42,10 @@
                 <input class="form-control" type="text" id="ver1" name="version" value="{{edit_file.version}}">
                 <label for="pg1">PG name:</label>
                 <input class="form-control" type="text" id="pg1" name="pg_name" value="{{edit_file.pg_name}}">
-                <input class="form-control mt-3" type="file" id="myFile" name="img" required>
+                <label for="myFile">Up Images:</label>
+                <input class="form-control" type="file" id="myFile" name="img" onChange="checkFileName_jpg('myFile')" multiple required>
+                <label for="myFile">Up Files:</label>
+                <input class="form-control" type="file" id="excel" name="excel" onChange="checkFileName('excel');" >
                 <div class="mt-3 text-center">
                     <button type="submit" class="btn btn-info">Save</button>
                 </div>
@@ -43,10 +54,10 @@
         </div>
     </div>
     <div class="col-md-8">
-         <div style="min-height:79vh; max-height:79vh; " class='form-control'>
+       <div style="min-height:79vh; max-height:79vh; " class='form-control'>
             <div class="row">
                 <div class="col-md-2" style="height:76vh;overflow:auto;"  >
-                     {% for image in img %}
+                     {% for image in list_cam_img %}
                     <a href="#" onclick="showPicture('{% static image %}')" >
                         <img class="hover-shadow" src={% static image %} alt="{{image}}" width="100%" style="margin-top:2px;" />
                     </a>
@@ -55,7 +66,7 @@
                 <div class="col-md-10">
                     <div>
                         <div id="show_image">
-                            <img id="main_image" src="{% static img.0 %}" alt="" width="98%"  />
+                            <img id="main_image" src="{% static list_cam_img.0 %}" alt="" width="98%"  />
                         </div>
                     </div>
                 </div>
@@ -63,4 +74,46 @@
        </div>
     </div>
 </div>
+<script>
+
+    function showPicture(img_url) {
+            let main_img = document.getElementById('main_image');
+            let ma_img = document.getElementById('img_1');
+            main_img.src = img_url;
+
+        }
+
+    function checkFileName(id) {
+           let fileinput = document.getElementById(id);
+           let filename = fileinput.files[0].name
+           let message_element = document.getElementById("message");
+           let white_list =  ["xlsx", "xls", "pdf",'pptx','docx','doc']
+           let file_extension = filename.split(".").at(-1)
+
+           if (filename && !white_list.includes(file_extension)){
+                message_element.innerHTML = "File invalid";
+                message_element.classList.add("alert", "alert-danger");
+                fileinput.value = null;
+           }else{
+                message_element.innerHTML = "";
+                message_element.classList.remove("alert", "alert-danger");
+           }
+    }
+    function checkFileName_jpg(id) {
+           let fileinput = document.getElementById(id);
+           let filename = fileinput.files[0].name
+           let message_element = document.getElementById("message");
+           let white_list = ["jpg","JPN","jpn"]
+           let file_extension = filename.split(".").at(-1)
+
+           if (filename && !white_list.includes(file_extension)){
+                message_element.innerHTML = "File invalid";
+                message_element.classList.add("alert", "alert-danger");
+                fileinput.value = null;
+           }else{
+                message_element.innerHTML = "";
+                message_element.classList.remove("alert", "alert-danger");
+           }
+    }
+</script>
 {% endblock %}s
