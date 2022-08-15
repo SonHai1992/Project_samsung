@@ -10,19 +10,22 @@
 <section class="section">
     <div class="row">
          <div class="col-md-8">
-             <label>Upload New File ➽</label>
-             <a class="btn btn-primary" href="{% url 'cam_upload' %}">Upload</a>
+             {% if 'cad' in user.get_group_list %}
+             <a class="btn btn-outline-primary btn-sm" href="{% url 'cam_upload' %}"><i data-feather="plus-square"></i> Upload</a>
+             <a class="btn btn-outline-primary btn-sm" href="#">Export Excel</a>
+             {% endif %}
          </div>
         <div class="col-md-4">
             <form class="input-group"  action="{% url 'search' %}">
                 {% csrf_token %}
                 <input name="search" style="width:50%; margin-bottom:1px" class="form-control" type="search" placeholder="Search..." required />
-                <button class="btn btn-dark" type="submit" >Search</button>
+                <button title="Search" class="btn btn-dark" type="submit" ><i data-feather="search"></i></button>
             </form>
         </div>
     </div>
         <table class="table table-hover" style="text-align: center;padding:1px !important;">
             <thead>
+                <th></th>
                 <th>No.</th>
                 <th>Model</th>
                 <th>Process</th>
@@ -33,6 +36,7 @@
             </thead>
             {% for i in customers %}
             <tr style="padding:-1px !important;">
+                <td><input type="checkbox"></td>
                 <td>{{ forloop.counter}}</td>
                 <td>{{i.model}}</td>
                 <td>{{i.process}}</td>
@@ -40,17 +44,21 @@
                 <td>{{i.pg_name}}</td>
                 <td>{{i.status}}</td>
                 <td>
-                    {% if i.status == "Waiting" %}
-                    <a class="btn btn-info" href="{% url 'edit' i.id %}">Edit</a>
-                    {% endif%}
-                    <a class="btn btn-success" href="{% url 'view_pqc_result' i.id %}">View</a>
+                    {% if 'cad' in user.get_group_list %}
+                        {% if i.status == "Waiting" %}
+                        <a title="Edit" class="btn btn-outline-secondary" href="{% url 'edit' i.id %}"><i data-feather="edit"></i></a>
+                        {% endif%}
+                     {% endif%}
+                        <a title="View" class="btn btn-outline-secondary" href="{% url 'view_pqc_result' i.id %}"><i data-feather="eye"></i></a>
                 </td>
+                {% if 'cad' in user.get_group_list %}
                 <td>
                     <form method="post" action="{% url 'deleted' i.id %}" onsubmit="return confirm('You are want to delete')">
                          {% csrf_token %}
-                        <button class="btn btn-danger">Delete</button>
+                        <button title="Delete" class="btn btn-outline-danger"><i data-feather="trash-2"></i></button>
                     </form>
                 </td>
+                {% endif%}
             </tr>
             {% endfor %}
         </table>

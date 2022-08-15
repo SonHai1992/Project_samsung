@@ -21,7 +21,7 @@
         <div id="sidebar" class='active'>
             <div class="sidebar-wrapper active">
                 <div class="sidebar-header">
-                    <img src="{% static 'assets/images/logo/logo1.png' %}" alt="" srcset="">
+                    <img src="{% static 'assets/images/logo/logo_cam.png' %}" alt="" srcset="">
                 </div>
                 <div class="sidebar-menu">
                     <ul class="menu">
@@ -33,22 +33,18 @@
                             </a>
                         </li>
 
-                        {% if 'cad' in user.get_group_list  %}
                         <li class="sidebar-item {% block CAD %} {% endblock %}">
                             <a href="{% url 'index' %}" class='sidebar-link'>
-                                <i data-feather="triangle" width="20"></i>
+                                <i data-feather="user-plus" width="20"></i>
                                 <span>CAD/CAM</span>
                             </a>
                         </li>
-                        {% endif %}
-                        {% if 'pqc' in user.get_group_list %}
                         <li class="sidebar-item {% block PQC %} {% endblock %}">
                             <a href="{% url 'index_pqc' %}" class='sidebar-link'>
-                                <i data-feather="briefcase" width="20"></i>
+                                <i data-feather="user-check" width="20"></i>
                                 <span>PQC</span>
                             </a>
                         </li>
-                        {% endif %}
                     </ul>
                 </div>
                 <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>

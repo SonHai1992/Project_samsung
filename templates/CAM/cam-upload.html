@@ -42,10 +42,10 @@
                 <input class="form-control" type="text" id="pg1" name="pg_name" required>
                 <label for="myFile">Up Images:</label>
                 <input class="form-control" type="file" id="myFile" name="img" onChange="checkFileName_jpg('myFile')" multiple required>
-                <label for="myFile">Up Files:</label>
+                <label for="excel">Up Files:</label>
                 <input class="form-control" type="file" id="excel" name="excel" onChange="checkFileName('excel');" >
                 <div class="mt-3 text-center">
-                    <button class="btn btn-danger" onclick="clear_form()">Submit</button>
+                    <button class="btn btn-primary" onclick="clear_form()">Submit</button>
                 </div>
             </form>
 
@@ -65,7 +65,7 @@
                 <div class="col-md-10">
                     <div>
                         <div id="show_image">
-                            <img id="main_image" src="{% static img.0 %}" alt="" width="98%"  />
+                            <img id="main_image" src="#" alt="" width="98%"  />
                         </div>
                     </div>
                 </div>
@@ -90,7 +90,7 @@
            let file_extension = filename.split(".").at(-1)
 
            if (filename && !white_list.includes(file_extension)){
-                message_element.innerHTML = "File invalid";
+                message_element.innerHTML = `File invalid. Allow ${white_list}`;
                 message_element.classList.add("alert", "alert-danger");
                 fileinput.value = null;
            }else{
@@ -100,20 +100,27 @@
     }
     function checkFileName_jpg(id) {
            let fileinput = document.getElementById(id);
-           let filename = fileinput.files[0].name
-           let message_element = document.getElementById("message");
-           let white_list = ["jpg","JPN","jpn"]
-           let file_extension = filename.split(".").at(-1)
+           let showimg = document.getElementById(id);
+           for(let i=0; i <= fileinput.files.length; i++){
+               let filename = fileinput.files[i].name
+               let message_element = document.getElementById("message");
+               let white_list = ["jpg","JPN","jpn"]
+               let file_extension = filename.split(".").at(-1)
 
-           if (filename && !white_list.includes(file_extension)){
-                message_element.innerHTML = "File invalid";
-                message_element.classList.add("alert", "alert-danger");
-                fileinput.value = null;
-           }else{
-                message_element.innerHTML = "";
-                message_element.classList.remove("alert", "alert-danger");
+               if (filename && !white_list.includes(file_extension)){
+                    message_element.innerHTML = `File invalid. Allow ${white_list}`;
+                    message_element.classList.add("alert", "alert-danger");
+                    fileinput.value = null;
+               }else{
+                    message_element.innerHTML = "";
+                    message_element.classList.remove("alert", "alert-danger");
+               }
            }
-    }
+           for(let i=0; i <= showimg.files.length; i++){
+                let filename = fileinput.files[i].name
+                main_image.src = URL.createObjectURL(filename)
+           }
+        }
 
     function clear_form(){
 

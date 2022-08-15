@@ -15,7 +15,7 @@
             <form class="input-group"  action="#">
                 {% csrf_token %}
                 <input style="width:50%; margin-bottom:1px" class="form-control" type="search" placeholder="Search..." name="search_pqc">
-                <button class="btn btn-dark" type="submit" >Search</button>
+                <button title="Search" class="btn btn-dark" type="submit" ><i data-feather="search"></i></button>
             </form>
         </div>
     </div>
@@ -40,7 +40,7 @@
                 <td>{{i.status}}</td>
                 <td style="color:red;">{{i.get_submit_day}} day</td>
                 <td>
-                    <a class="btn btn-info" href="{% url 'comfirm' i.id %}">Comfirm</a>
+                    <a title="Confirm" class="btn btn-outline-secondary" href="{% url 'comfirm' i.id %}"><i data-feather="check-square"></i></a>
                 </td>
             </tr>
             {% endfor %}
