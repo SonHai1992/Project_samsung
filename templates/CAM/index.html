@@ -12,7 +12,7 @@
          <div class="col-md-8">
              {% if 'cad' in user.get_group_list %}
              <a class="btn btn-outline-primary btn-sm" href="{% url 'cam_upload' %}"><i data-feather="plus-square"></i> Upload</a>
-             <a class="btn btn-outline-primary btn-sm" href="#">Export Excel</a>
+             <a class="btn btn-outline-primary btn-sm" href="#"><i data-feather="download"></i> Export Excel</a>
              {% endif %}
          </div>
         <div class="col-md-4">
@@ -25,7 +25,7 @@
     </div>
         <table class="table table-hover" style="text-align: center;padding:1px !important;">
             <thead>
-                <th></th>
+                <th><input type="checkbox"  onClick="toggle(this)"/></th>
                 <th>No.</th>
                 <th>Model</th>
                 <th>Process</th>
@@ -36,7 +36,7 @@
             </thead>
             {% for i in customers %}
             <tr style="padding:-1px !important;">
-                <td><input type="checkbox"></td>
+                <td><input type="checkbox" name="foo"></td>
                 <td>{{ forloop.counter}}</td>
                 <td>{{i.model}}</td>
                 <td>{{i.process}}</td>
@@ -80,4 +80,12 @@
             </span>
         </div>
 </section>
+<script>
+    function toggle(source) {
+     checkboxes = document.getElementsByName('foo');
+     for(var i=0, n=checkboxes.length;i<n;i++) {
+        checkboxes[i].checked = source.checked;
+     }
+    }
+</script>
 {% endblock %}

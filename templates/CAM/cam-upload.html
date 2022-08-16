@@ -25,7 +25,7 @@
             <form class="form-group" id="form-data" action="{% url 'cam_upload' %}" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <label for="model1">Model:</label>
-                <input class="form-control" type="text" id="model1" name="model">
+                <input class="form-control" type="text" id="model1" name="model" required>
                 <label for="cnc1">Process:</label>
                 <select class="form-control" id="cnc1" name="process">
                     <option value="CNC3">CNC3</option>
@@ -45,7 +45,7 @@
                 <label for="excel">Up Files:</label>
                 <input class="form-control" type="file" id="excel" name="excel" onChange="checkFileName('excel');" >
                 <div class="mt-3 text-center">
-                    <button class="btn btn-primary" onclick="clear_form()">Submit</button>
+                    <button class="btn btn-primary">Submit</button>
                 </div>
             </form>
 
@@ -106,6 +106,8 @@
                let message_element = document.getElementById("message");
                let white_list = ["jpg","JPN","jpn"]
                let file_extension = filename.split(".").at(-1)
+               main_image.src = URL.createObjectURL(fileinput.files[i])
+               console.log(fileinput.files[i])
 
                if (filename && !white_list.includes(file_extension)){
                     message_element.innerHTML = `File invalid. Allow ${white_list}`;
@@ -115,10 +117,6 @@
                     message_element.innerHTML = "";
                     message_element.classList.remove("alert", "alert-danger");
                }
-           }
-           for(let i=0; i <= showimg.files.length; i++){
-                let filename = fileinput.files[i].name
-                main_image.src = URL.createObjectURL(filename)
            }
         }
 

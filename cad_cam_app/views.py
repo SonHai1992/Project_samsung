@@ -46,22 +46,23 @@ def cam_up_load(request):
         myfile = request.FILES.getlist('img')
         excel = request.FILES.get('excel')
         created_by = request.user.username
-        new_record = Cadcam(model=model,
-                            process=process,
-                            version=version,
-                            pg_name=pg_name,
-                            file_cam=excel,
-                            type="Cadcam",
-                            created_by=created_by
-                            )
-        new_record.save()
-        a = []
-        for image in myfile:
-            new_img = Images_cam(name=new_record,
-                                 img_cam=image
-                                 )
-            new_img.save()
-            a.append(new_img.img_cam.name)
+        if (model and process and version and pg_name):
+            new_record = Cadcam(model=model,
+                                process=process,
+                                version=version,
+                                pg_name=pg_name,
+                                file_cam=excel,
+                                type="Cadcam",
+                                created_by=created_by
+                                )
+            new_record.save()
+            a = []
+            for image in myfile:
+                new_img = Images_cam(name=new_record,
+                                     img_cam=image
+                                     )
+                new_img.save()
+                a.append(new_img.img_cam.name)
         return redirect("cam_upload")
     return render(request, 'CAM/cam-upload.html',
                   {"custom": custom, "PROCESS_OPTIONS": PROCESS_OPTIONS, 'messages': ''})
@@ -125,7 +126,6 @@ def Edit_upload(request, id_input):
             i.delete()
 
         if excel_file and old_excel_file:
-            print("runnnnnnnnnnnnnnn", old_excel_file)
             os.remove(f"{BASE_DIR}/media/{old_excel_file}")
 
         return redirect('index')
