@@ -51,13 +51,12 @@
                 <label for="reason">Reason:</label>
                 <textarea id="reason" name="reason" class="form-control" style="height: 6vh; width:100%;resize:none;">{{list_view.reason}}</textarea>
                 <label>PQC_File:</label>
-                <button style="height:35px;" class="form-control"><a href="{% static list_view.file_pqc %}" download="{% static list_view.file_pqc %}">{{list_view.get_file_pqc}}</a></button>
-
+                <a style="height:35px;" class="form-control" href="{% static list_view.file_pqc %}" download="{% static list_view.file_pqc %}">{{list_view.get_file_pqc}}</a>
             </div>
             <div class="col-md-12">
                 <div class="row">
                      <div class="col-md-10">
-                        <a type="submit" class="btn btn-primary" href="{% url 'index' %}" style="font-size: 15px;">Back ➥</a>
+                        <a class="btn btn-outline-primary" href="{% url 'excel' list_view.id %}" >Export Excel</a>
                      </div>
                 </div>
             </div>
@@ -102,31 +101,5 @@
         </div>
     </div>
 </section>
-
-    <script>
-        function displayPicture(img_url) {
-            let main_img = document.getElementById('image_2');
-            main_img.src = img_url;
-
-        }
-        function display_Picture(img_url) {
-            let main_img = document.getElementById('image_3');
-            main_img.src = img_url;
-
-        }
-
-        function showPicture(img) {
-            let image_instance = document.getElementById(img);
-            let img_url = image_instance.src;
-            let show_div = document.getElementById('show_img');
-            let main_img = document.getElementById('main_img');
-            main_img.src = img_url;
-            show_div.style.display = "block";
-        }
-
-        function hidePicture() {
-            let show_div = document.getElementById('show_img');
-            show_div.style.display = "none";
-        }
-    </script>
+<script src="{% static 'assets/js/cam_view.js' %}"></script>
 {% endblock %}

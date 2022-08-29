@@ -7,109 +7,113 @@
     {% block title %}
     <title>CAD/CAM solution</title>
     {% endblock %}
-    <link rel="stylesheet" href="../../static/assets/css/bootstrap.css">
+    <link rel="stylesheet" href="{% static 'assets/css/bootstrap.css' %}">
 
-    <link rel="stylesheet" href="../../static/assets/vendors/chartjs/Chart.min.css">
+    <link rel="stylesheet" href="{% static 'assets/vendors/chartjs/Chart.min.css' %}">
 
-    <link rel="stylesheet" href="../../static/assets/vendors/perfect-scrollbar/perfect-scrollbar.css">
-    <link rel="stylesheet" href="../../static/assets/css/app.css">
-    <link rel="stylesheet" href="../../static/assets/css/base.css">
-    <link rel="shortcut icon" href="../../static/assets/images/favicon.svg" type="image/x-icon">
+    <link rel="stylesheet" href="{% static 'assets/vendors/perfect-scrollbar/perfect-scrollbar.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/app.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/base.css' %}">
+    <link rel="shortcut icon" href="{% static 'assets/images/favicon.svg' %}" type="image/x-icon">
 </head>
 <body>
-    <div id="app">
-        <div id="sidebar" class='active'>
-            <div class="sidebar-wrapper active">
-                <div class="sidebar-header">
-                    <img src="{% static 'assets/images/logo/logo_cam.png' %}" alt="" srcset="">
-                </div>
-                <div class="sidebar-menu">
-                    <ul class="menu">
-                        <li class='sidebar-title'>Main Menu</li>
-                        <li class="sidebar-item {% block Home %} {% endblock %}" onclick="console.log(this)">
-                            <a href="{% url 'home'%}" class='sidebar-link'>
-                                <i data-feather="home" width="20"></i>
-                                <span>Home</span>
-                            </a>
-                        </li>
-
-                        <li class="sidebar-item {% block CAD %} {% endblock %}">
-                            <a href="{% url 'index' %}" class='sidebar-link'>
-                                <i data-feather="user-plus" width="20"></i>
-                                <span>CAD/CAM</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item {% block PQC %} {% endblock %}">
-                            <a href="{% url 'index_pqc' %}" class='sidebar-link'>
-                                <i data-feather="user-check" width="20"></i>
-                                <span>PQC</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-                <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>
+<div id="app">
+    <div id="sidebar" class='active'>
+        <div class="sidebar-wrapper active">
+            <div class="sidebar-header">
+                <img src="{% static 'assets/images/logo/logo_cam.png' %}" alt="" srcset="">
             </div>
+            <div class="sidebar-menu">
+                <ul class="menu">
+                    <li class='sidebar-title'>Main Menu</li>
+                    <li class="sidebar-item {% block Home %} {% endblock %}" onclick="console.log(this)">
+                        <a href="{% url 'home'%}" class='sidebar-link'>
+                            <i data-feather="home" width="20"></i>
+                            <span>Home</span>
+                        </a>
+                    </li>
+
+                    <li class="sidebar-item {% block CAD %} {% endblock %}">
+                        <a href="{% url 'index' %}" class='sidebar-link'>
+                            <i data-feather="user-plus" width="20"></i>
+                            <span>CAD/CAM</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item {% block PQC %} {% endblock %}">
+                        <a href="{% url 'index_pqc' %}" class='sidebar-link'>
+                            <i data-feather="user-check" width="20"></i>
+                            <span>PQC</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>
         </div>
+    </div>
 
-        <div id="main">
-            <nav class="navbar navbar-header navbar-expand navbar-light">
-                <a class="sidebar-toggler" href="#"><span class="navbar-toggler-icon"></span></a>
+    <div id="main">
+        <nav class="navbar navbar-header navbar-expand navbar-light">
+            <a class="sidebar-toggler" href="#"><span class="navbar-toggler-icon"></span></a>
 
-                <button class="btn navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+            <button class="btn navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent"
                     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
-                    <ul class="navbar-nav d-flex align-items-center navbar-light ms-auto">
-                        <li class="dropdown">
-                            <a href="#" data-bs-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
-                                <div class="avatar me-1">
-                                    <img src="../../static/assets/images/avatar/user-avatar.png" alt="" srcset="">
-                                </div>
-                                <div class="d-none d-md-block d-lg-inline-block">Hi, {{user}}</div>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-end">
-                                <a class="dropdown-item" href="{% url 'logout_handler' %}"><i data-feather="log-out"></i> Logout</a>
+                <ul class="navbar-nav d-flex align-items-center navbar-light ms-auto">
+                    <li class="dropdown">
+                        <a href="#" data-bs-toggle="dropdown"
+                           class="nav-link dropdown-toggle nav-link-lg nav-link-user">
+                            <div class="avatar me-1">
+                                <img src="{% static 'assets/images/avatar/user-avatar.png' %}" alt="" srcset="">
                             </div>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
-
-            <div class="main-content container-fluid">
-                {% block content_title %}
-
-                {% endblock %}
-                {% block content %}
-
-                {% endblock %}
-
+                            <div class="d-none d-md-block d-lg-inline-block">Hi, {{user}}</div>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end">
+                            <a class="dropdown-item" href="{% url 'password_change' %}"><i data-feather="edit"></i>Change
+                                your password</a>
+                            <a class="dropdown-item" href="{% url 'logout' %}"><i data-feather="log-out"></i> Logout</a>
+                        </div>
+                    </li>
+                </ul>
             </div>
+        </nav>
+
+        <div class="main-content container-fluid">
+            {% block content_title %}
+
+            {% endblock %}
+            {% block content %}
+
+            {% endblock %}
+
         </div>
     </div>
-    <footer>
-        <div class="clearfix text-muted">
-            <div class="float-start">
-                <p>2022 &copy; Hai Samsung </p>
-            </div>
-            <div class="float-end">
-                <p>Developing with <span class='text-danger'><i data-feather="heart"></i></span> by <a href="#">CAD/CAM P</a></p>
-            </div>
+</div>
+<footer>
+    <div class="clearfix text-muted">
+        <div class="float-start">
+            <p>2022 &copy; Hai Samsung </p>
         </div>
-    </footer>
-    <div id="show_img" onclick="hidePicture()" >
-        <img id="main_img" src="" alt="" width="80%" height="80%"  />
+        <div class="float-end">
+            <p>Developing with <span class='text-danger'><i data-feather="heart"></i></span> by <a href="#">CAD/CAM
+                P</a></p>
+        </div>
     </div>
-    <script src="../../static/assets/js/feather-icons/feather.min.js"></script>
-    <script src="../../static/assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
-    <script src="../../static/assets/js/app.js"></script>
-    
-    <script src="../../static/assets/vendors/chartjs/Chart.min.js"></script>
-    <script src="../../static/assets/vendors/apexcharts/apexcharts.min.js"></script>
-    <script src="../../static/assets/js/pages/dashboard.js"></script>
-
-    <script src="../../static/assets/js/main.js"></script>
+</footer>
+<div id="show_img" onclick="hidePicture()">
+    <img id="main_img" src="" alt="" width="80%" height="80%"/>
+</div>
+<script src="{% static 'assets/js/feather-icons/feather.min.js' %}"></script>
+<script src="{% static 'assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js' %}"></script>
+<script src="{% static 'assets/js/app.js' %}"></script>
+<script src="{% static 'assets/vendors/chartjs/Chart.min.js' %}"></script>
+<script src="{% static 'assets/vendors/apexcharts/apexcharts.min.js' %}"></script>
+<script src="{% static 'assets/js/pages/dashboard.js' %}"></script>
+<script src="{% static 'assets/js/main.js' %}"></script>
+<script src="{% static 'assets/js/base.js' %}"></script>
 </body>
 <script>
 

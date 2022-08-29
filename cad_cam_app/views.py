@@ -9,7 +9,8 @@ import xlwt
 from PIL import Image
 from django.db.models import Q
 import os
-from project.settings import BASE_DIR, MEDIA_ROOT
+from project.settings import BASE_DIR
+import re
 
 
 # Create your views here.
@@ -136,12 +137,12 @@ def Edit_upload(request, id_input):
 @login_required
 def Search(request):
     search = request.GET.get('search', '')
-    pageNumber = request.GET.get('page')
+    # pageNumber = request.GET.get('page')
     custom = Cadcam.objects.filter(
         Q(model__icontains=search) | Q(process__icontains=search) | Q(version__icontains=search), deleted=False)
-    paginator = Paginator(custom, 10)
-    customers = paginator.get_page(pageNumber)
-    return render(request, 'CAM/search.html', {'search': search, 'customers': customers})
+    # paginator = Paginator(custom, 10)
+    # customers = paginator.get_page(pageNumber)
+    return render(request, 'CAM/search.html', {'search': search, 'custom': custom})
 
 
 @login_required
@@ -150,7 +151,7 @@ def export_users_xls(request, id_input):
     response['Content-Disposition'] = 'attachment; filename="users.xls"'
 
     wb = xlwt.Workbook(encoding='utf-8')
-    ws = wb.add_sheet('PQC result')  # this will make a sheet named Users Data
+    ws = wb.add_sheet('Model')  # this will make a sheet named Users Data
 
     # Sheet header, first row
     row_num = 0
@@ -158,7 +159,72 @@ def export_users_xls(request, id_input):
     font_style = xlwt.XFStyle()
     font_style.font.bold = True
 
-    columns = ['model', 'process', 'version', 'pg_name', 'pqc_confirm_by', 'reason', 'img', 'pqc_img']
+    columns = ['model', 'process', 'version', 'pg_name', 'pqc_confirm_by', 'pqc_confirm_at', 'reason', 'img_cam', 'img_pqc']
+
+    for col_num in range(len(columns)):
+        ws.write(row_num, col_num, columns[col_num], font_style)  # at 0 row 0 column
+    # Sheet body, remaining rows
+    font_style = xlwt.XFStyle()
+
+    rows = Cadcam.objects.filter(id=id_input)
+    data = rows.values_list('model', 'process', 'version', 'pg_name', 'pqc_confirm_by',
+                                                          'pqc_confirm_at', 'reason')
+    rows_1 = Images_cam.objects.filter(name=rows[0]).values_list('img_cam', flat=True)
+    rows_2 = Images_pqc.objects.filter(name=rows[0]).values_list('img_pqc', flat=True)
+    for row in data:
+        row_num += 1
+        for col_num in range(len(row)):
+            ws.write(row_num, col_num, str(row[col_num]), font_style)
+
+    if rows_1:
+        col_num += 1
+        old_row = row_num
+        for i in rows_1:
+            img = Image.open("media/" + i)
+            size = 300, 200
+            img.thumbnail(size, Image.ANTIALIAS)
+            r, g, b = img.split()
+            img = Image.merge("RGB", (r, g, b))
+            img.save('imagetoadd.bmp')
+            ws.insert_bitmap('imagetoadd.bmp', old_row, col_num)
+            old_row += 1
+
+    if rows_2:
+        col_num += 1
+        old_row = row_num
+        for i in rows_2:
+            img = Image.open("media/" + i)
+            size = 300, 200
+            img.thumbnail(size, Image.ANTIALIAS)
+            r, g, b = img.split()
+            img = Image.merge("RGB", (r, g, b))
+            img.save('imagetoadd.bmp')
+            ws.insert_bitmap('imagetoadd.bmp', old_row, col_num)
+            old_row += 1
+
+    wb.save(response)
+
+    return response
+
+
+
+@login_required
+def export_model_xls(request):
+    search_old = re.findall("&search=(.+)$|&", request.headers['Referer'])
+    search = search_old[0].replace("+", " ")
+    response = HttpResponse(content_type='application/ms-excel')
+    response['Content-Disposition'] = 'attachment; filename="users.xls"'
+
+    wb = xlwt.Workbook(encoding='utf-8')
+    ws = wb.add_sheet('Model')  # this will make a sheet named Users Data
+
+    # Sheet header, first row
+    row_num = 0
+
+    font_style = xlwt.XFStyle()
+    font_style.font.bold = True
+
+    columns = ['model', 'process', 'version', 'pg_name', 'pqc_confirm_by', 'pqc_confirm_at', 'reason', 'img_cam', 'img_pqc']
 
     for col_num in range(len(columns)):
         ws.write(row_num, col_num, columns[col_num], font_style)  # at 0 row 0 column
@@ -166,22 +232,41 @@ def export_users_xls(request, id_input):
     # Sheet body, remaining rows
     font_style = xlwt.XFStyle()
 
-    rows = Cadcam.objects.filter(id=id_input).values_list('model', 'process', 'version', 'pg_name', 'pqc_confirm_by',
-                                                          'reason', 'img', 'pqc_img')
-    for row in rows:
+    rows = Cadcam.objects.filter(model=search)
+    data_all = rows.values_list('model', 'process', 'version', 'pg_name', 'pqc_confirm_by',
+                        'pqc_confirm_at', 'reason')
+
+    for idx, model in enumerate(rows):
         row_num += 1
-        for col_num in range(len(row)):
-            if col_num in [len(row) - 1, len(row) - 2]:
-                img = Image.open("media/" + row[col_num])
+        data = data_all[idx]
+        rows_1 = Images_cam.objects.filter(name=model).values_list('img_cam', flat=True)
+        rows_2 = Images_pqc.objects.filter(name=model).values_list('img_pqc', flat=True)
+        print(data)
+        for col_num in range(len(data)):
+            ws.write(row_num, col_num, str(data[col_num]), font_style)
+
+        if rows_1:
+            col_num += 1
+            for i in rows_1:
+                img = Image.open("media/" + i)
                 size = 300, 200
                 img.thumbnail(size, Image.ANTIALIAS)
                 r, g, b = img.split()
                 img = Image.merge("RGB", (r, g, b))
                 img.save('imagetoadd.bmp')
                 ws.insert_bitmap('imagetoadd.bmp', row_num, col_num)
-            else:
-                ws.write(row_num, col_num, row[col_num], font_style)
 
+
+        if rows_2:
+            col_num += 1
+            for i in rows_2:
+                img = Image.open("media/" + i)
+                size = 300, 200
+                img.thumbnail(size, Image.ANTIALIAS)
+                r, g, b = img.split()
+                img = Image.merge("RGB", (r, g, b))
+                img.save('imagetoadd.bmp')
+                ws.insert_bitmap('imagetoadd.bmp', row_num, col_num)
     wb.save(response)
 
     return response

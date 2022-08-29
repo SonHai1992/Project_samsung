@@ -31,6 +31,7 @@
                     <option value="CNC3">CNC3</option>
                     <option value="CNC4">CNC4</option>
                     <option value="CNC5">CNC5</option>
+                    <option value="CNC45">CNC45</option>
                     <option value="CNC6">CNC6</option>
                     <option value="CNC7">CNC7</option>
                     <option value="CNC8">CNC8</option>
@@ -51,86 +52,11 @@
 
         </div>
     </div>
-
-    <div class="col-md-8">
-       <div style="min-height:79vh; max-height:79vh; " class='form-control'>
-            <div class="row">
-                <div class="col-md-2" style="height:76vh;overflow:auto;"  >
-                     {% for image in img %}
-                    <a href="#" onclick="showPicture('{% static image %}')" >
-                        <img class="hover-shadow" src={% static image %} alt="{{image}}" width="100%" style="margin-top:2px;" />
-                    </a>
-                    {% endfor %}
-                </div>
-                <div class="col-md-10">
-                    <div>
-                        <div id="show_image">
-                            <img id="main_image" src="#" alt="" width="98%"  />
-                        </div>
-                    </div>
-                </div>
-            </div>
+   <div class="col-md-8">
+       <div style="min-height:79vh; max-height:79vh;overflow:auto; " class='form-control'>
+        <div style="margin-left:100px;" id="show_image"></div>
        </div>
     </div>
 </div>
-<script>
-
-    function showPicture(img_url) {
-            let main_img = document.getElementById('main_image');
-            let ma_img = document.getElementById('img_1');
-            main_img.src = img_url;
-
-        }
-
-    function checkFileName(id) {
-           let fileinput = document.getElementById(id);
-           let filename = fileinput.files[0].name
-           let message_element = document.getElementById("message");
-           let white_list =  ["xlsx", "xls", "pdf",'pptx','docx','doc']
-           let file_extension = filename.split(".").at(-1)
-
-           if (filename && !white_list.includes(file_extension)){
-                message_element.innerHTML = `File invalid. Allow ${white_list}`;
-                message_element.classList.add("alert", "alert-danger");
-                fileinput.value = null;
-           }else{
-                message_element.innerHTML = "";
-                message_element.classList.remove("alert", "alert-danger");
-           }
-    }
-    function checkFileName_jpg(id) {
-           let fileinput = document.getElementById(id);
-           let showimg = document.getElementById(id);
-           for(let i=0; i <= fileinput.files.length; i++){
-               let filename = fileinput.files[i].name
-               let message_element = document.getElementById("message");
-               let white_list = ["jpg","JPN","jpn"]
-               let file_extension = filename.split(".").at(-1)
-               main_image.src = URL.createObjectURL(fileinput.files[i])
-               console.log(fileinput.files[i])
-
-               if (filename && !white_list.includes(file_extension)){
-                    message_element.innerHTML = `File invalid. Allow ${white_list}`;
-                    message_element.classList.add("alert", "alert-danger");
-                    fileinput.value = null;
-               }else{
-                    message_element.innerHTML = "";
-                    message_element.classList.remove("alert", "alert-danger");
-               }
-           }
-        }
-
-    function clear_form(){
-
-        let form = document.getElementById('form-data');
-        form.submit()
-        form.reset();
-        document.getElementById('model1').value='';
-        document.getElementById('ver1').value='';
-        document.getElementById('pg1').value='';
-        document.getElementById('myFile').value='';
-        document.getElementById('excel').value='';
-        return False;
-    }
-</script>
+<script src="{% static 'assets/js/cam_upload.js' %}"></script>
 {% endblock %}

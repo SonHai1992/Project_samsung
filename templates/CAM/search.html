@@ -12,7 +12,7 @@
         <div class="col-md-8">
             <a class="btn btn-outline-primary btn-sm" href="{% url 'cam_upload' %}"><i data-feather="plus-square"></i>
                 Upload</a>
-            <a class="btn btn-outline-primary btn-sm" href="#"><i data-feather="download"></i> Export Excel</a>
+            <a class="btn btn-outline-primary btn-sm" href="{% url 'model_excel' %}"><i data-feather="download"></i>Export Excel</a>
         </div>
         <div class="col-md-4">
             <form class="input-group" action="">
@@ -23,19 +23,19 @@
             </form>
         </div>
     </div>
-    <table class="table table-hover" style="text-align: center;padding:5px !important;">
+    <table class="table table-hover" style="overflow:auto;" >
         <thead>
+        <th><input type="checkbox"  onClick="toggle(this)"/></th>
         <th>No.</th>
-        <th>Model</th>
         <th>Process</th>
         <th>Version</th>
         <th>P/G Name</th>
         <th>Status</th>
         <th>Action</th>
         </thead>
-        {% for i in customers %}
+        {% for i in custom %}
         <tr>
-            <td>{{ forloop.counter}}</td>
+            <td><input type="checkbox" name="foo"></td>
             <td>{{i.model}}</td>
             <td>{{i.process}}</td>
             <td>{{i.version}}</td>
@@ -63,22 +63,23 @@
         </tr>
         {% endfor %}
     </table>
-    <div style="text-align:center;">
-            <span class="step-links">
-                {% if customers.has_previous %}
-                    <a href="?search={{search}}&page={{ customers.previous_page_number }}">Previous</a>
-                {% endif %}
-            </span>
+<!--    -->
+<!--    <div style="text-align:center;">-->
+<!--            <span class="step-links">-->
+<!--                {% if customers.has_previous %}-->
+<!--                    <a href="?search={{search}}&page={{ customers.previous_page_number }}">Previous</a>-->
+<!--                {% endif %}-->
+<!--            </span>-->
 
-        <span class="current">
-                Page {{ customers.number }} of {{ customers.paginator.num_pages }}
-            </span>
+<!--        <span class="current">-->
+<!--                Page {{ customers.number }} of {{ customers.paginator.num_pages }}-->
+<!--            </span>-->
 
-        <span>
-                {% if customers.has_next %}
-                    <a href="?search={{search}}&page={{ customers.next_page_number }}">Next</a>
-                {% endif %}
-            </span>
-    </div>
+<!--        <span>-->
+<!--                {% if customers.has_next %}-->
+<!--                    <a href="?search={{search}}&page={{ customers.next_page_number }}">Next</a>-->
+<!--                {% endif %}-->
+<!--            </span>-->
+<!--    </div>-->
 </section>
 {% endblock %}

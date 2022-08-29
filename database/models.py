@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 
-PROCESS_OPTIONS = [(f'CNC{i}', f'CNC{i}') for i in range(3, 10)]
+PROCESS_OPTIONS = [(f'CNC{i}', f'CNC{i}') for i in range(3, 46)]
 
 ORDER_STATUS = [(0, 'OK'), (1, 'NG')]
 

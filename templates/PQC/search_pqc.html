@@ -21,7 +21,6 @@
     </div>
         <table  class="table table-hover" style="text-align: center;">
             <thead>
-                <th>No.</th>
                 <th>Model</th>
                 <th>Process</th>
                 <th>Version</th>
@@ -32,7 +31,6 @@
             </thead>
             {% for i in customers %}
             <tr>
-                <td>{{ forloop.counter}}</td>
                 <td>{{i.model}}</td>
                 <td>{{i.process}}</td>
                 <td>{{i.version}}</td>
@@ -40,7 +38,9 @@
                 <td>{{i.status}}</td>
                 <td style="color:red;">{{i.get_submit_day}} day</td>
                 <td>
+                    {% if 'pqc' in user.get_group_list %}
                     <a title="Confirm" class="btn btn-outline-secondary" href="{% url 'comfirm' i.id %}"><i data-feather="check-square"></i></a>
+                    {% endif %}
                 </td>
             </tr>
             {% endfor %}
